@@ -1,0 +1,41 @@
+version: '3.3'
+services:
+  webserver:
+    build:
+      context: .
+      dockerfile: webserver.Dockerfile
+    links:
+      - frontend:frontend
+    ports:
+      - '80:80'
+  database:
+    image: mongo:4.0.4
+    container_name: 'mongo'
+    ports:
+      - '27017:27017'
+    volumes:
+      - ./mongo-volume:/data/db
+  backend:
+    links:
+      - database
+    container_name: backend
+    build:
+      context: .
+      dockerfile: backend.Dockerfile
+    environment:
+      HOST: '0.0.0.0'
+      MONGO_URI: 'mongodb://database:27017/dizzy-webapp'
+    ports:
+      - '5000:5000'
+  frontend:
+    depends_on:
+      - backend
+    container_name: frontend
+    stdin_open: true
+    build:
+      context: .
+      dockerfile: frontend.Dockerfile
+    environment:
+      NODE_ENV: 'production'
+    ports:
+      - '3000:3000'
