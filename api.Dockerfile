@@ -1,13 +1,7 @@
-FROM node:13.12.0-alpine
-
-RUN npm install -g pm2
-
+FROM node:14-alpine
 WORKDIR /app
 
-ENV PATH /app/node_modules/.bin:$PATH
-
-COPY api ./
-
+COPY api/package.json .
 RUN npm install --silent
 
-CMD pm2 start --no-daemon  processes.json
+CMD ["npm", "run", "dev"]

@@ -1,17 +1,17 @@
 // React
-import React, { useEffect } from "react";
+import React, { useEffect } from 'react';
 
 // Redux
-import { useDispatch } from "react-redux";
+import { useDispatch } from 'react-redux';
 
 // Material
-import { Typography } from "@material-ui/core";
+import { Typography } from '@material-ui/core';
 
 // Store
-import { resetSearch } from "../../store/actions";
+import { resetSearch } from '../../store/actions';
 
 // Styles
-import { useStyles, Logo, SearchBox } from "./Main-styles";
+import { useStyles, Logo, SearchBox } from './Main-styles';
 
 export const Main = () => {
   // Variables
@@ -28,7 +28,7 @@ export const Main = () => {
     <div className={styles.root}>
       <Logo />
       <Typography className={styles.typography}>
-        Search the Webs for Cryptos!
+        Search the Visible Dark Web!
       </Typography>
       <SearchBox />
     </div>

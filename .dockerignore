@@ -1,0 +1,24 @@
+# Git
+**/.git
+**/.github
+**/.gitignore
+
+# Tools
+**/.DS_Store
+**/_old
+**/.vscode
+
+# Docker
+**/.dockerignore
+**/Dockerfile
+**/docker-compose*
+
+# Build
+**/node_modules
+**/build
+**/npm-debug.log
+**/.env
+
+# Docs
+**/README*
+**/docs

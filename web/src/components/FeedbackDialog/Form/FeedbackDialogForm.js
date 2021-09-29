@@ -1,14 +1,14 @@
 // React
-import React from "react";
+import React from 'react';
 
 // Redux
-import { useDispatch } from "react-redux";
+import { useDispatch } from 'react-redux';
 
 // Hook Form
-import { useForm, Controller } from "react-hook-form";
+import { useForm, Controller } from 'react-hook-form';
 
 // Schema
-import { feedbackDialogFormSchema } from "./FeedbackDialogForm-schema";
+import { feedbackDialogFormSchema } from './FeedbackDialogForm-schema';
 
 // Material
 import {
@@ -18,13 +18,13 @@ import {
   MenuItem,
   Select,
   TextField,
-} from "@material-ui/core";
+} from '@material-ui/core';
 
 // Store
-import { createFeedback } from "../../../store/actions";
+import { createFeedback } from '../../../store/actions';
 
 // Styles
-import { useStyles } from "./FeedbackDialogForm-styles";
+import { useStyles } from './FeedbackDialogForm-styles';
 
 const FeedbackDialogForm = (props) => {
   // Variables
@@ -36,10 +36,10 @@ const FeedbackDialogForm = (props) => {
   });
 
   const categories = [
-    { type: "results", label: "Results" },
-    { type: "search_box", label: "Search Box" },
-    { type: "settings", label: "Settings" },
-    { type: "other", label: "Other" },
+    { type: 'results', label: 'Results' },
+    { type: 'search_box', label: 'Search Box' },
+    { type: 'settings', label: 'Settings' },
+    { type: 'other', label: 'Other' },
   ];
 
   // Handlers
@@ -87,8 +87,8 @@ const FeedbackDialogForm = (props) => {
         placeholder="Optional"
         variant="outlined"
         defaultValue=""
-        rowsMax={3}
-        rows={3}
+        maxRows={3}
+        minRows={3}
         multiline
       />
     </form>

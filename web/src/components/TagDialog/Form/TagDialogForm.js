@@ -1,14 +1,14 @@
 // React
-import React from "react";
+import React from 'react';
 
 // Redux
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector } from 'react-redux';
 
 // Hook Form
-import { useForm, Controller } from "react-hook-form";
+import { useForm, Controller } from 'react-hook-form';
 
 // Schema
-import { tagDialogFormSchema } from "./TagDialogForm-schema";
+import { tagDialogFormSchema } from './TagDialogForm-schema';
 
 // Material
 import {
@@ -18,13 +18,13 @@ import {
   MenuItem,
   Select,
   TextField,
-} from "@material-ui/core";
+} from '@material-ui/core';
 
 // Store
-import { createTag } from "../../../store/actions";
+import { createTag } from '../../../store/actions';
 
 // Styles
-import { useStyles } from "./TagDialogForm-styles";
+import { useStyles } from './TagDialogForm-styles';
 
 const TagDialogForm = (props) => {
   // Variables
@@ -37,18 +37,18 @@ const TagDialogForm = (props) => {
   });
 
   const safety = [
-    { type: "benign", label: "Benign" },
-    { type: "suspicious", label: "Suspicious" },
-    { type: "malicious", label: "Malicious" },
+    { type: 'benign', label: 'Benign' },
+    { type: 'suspicious', label: 'Suspicious' },
+    { type: 'malicious', label: 'Malicious' },
   ];
 
   const categories = [
-    { type: "social_network", label: "Social Network" },
-    { type: "marketplace", label: "Marketplace" },
-    { type: "multimedia", label: "Multimedia" },
-    { type: "wiki", label: "Wiki" },
-    { type: "forum", label: "Forum" },
-    { type: "other", label: "Other" },
+    { type: 'social_network', label: 'Social Network' },
+    { type: 'marketplace', label: 'Marketplace' },
+    { type: 'multimedia', label: 'Multimedia' },
+    { type: 'wiki', label: 'Wiki' },
+    { type: 'forum', label: 'Forum' },
+    { type: 'other', label: 'Other' },
   ];
 
   // Handlers
@@ -111,8 +111,8 @@ const TagDialogForm = (props) => {
         placeholder="Optional"
         variant="outlined"
         defaultValue=""
-        rowsMax={3}
-        rows={3}
+        maxRows={3}
+        minRows={3}
         multiline
       />
     </form>

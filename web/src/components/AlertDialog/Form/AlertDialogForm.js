@@ -1,14 +1,14 @@
 // React
-import React from "react";
+import React from 'react';
 
 // Redux
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector } from 'react-redux';
 
 // Hook Form
-import { useForm, Controller } from "react-hook-form";
+import { useForm, Controller } from 'react-hook-form';
 
 // Schema
-import { alertDialogFormSchema } from "./AlertDialogForm-schema";
+import { alertDialogFormSchema } from './AlertDialogForm-schema';
 
 // Material
 import {
@@ -18,13 +18,13 @@ import {
   MenuItem,
   Select,
   TextField,
-} from "@material-ui/core";
+} from '@material-ui/core';
 
 // Store
-import { createAlert } from "../../../store/actions";
+import { createAlert } from '../../../store/actions';
 
 // Styles
-import { useStyles } from "./AlertDialogForm-styles";
+import { useStyles } from './AlertDialogForm-styles';
 
 const AlertDialogForm = (props) => {
   // Variables
@@ -38,9 +38,9 @@ const AlertDialogForm = (props) => {
   });
 
   const frequencies = [
-    { type: "daily", label: "Daily" },
-    { type: "weekly", label: "Weekly" },
-    { type: "monthly", label: "Monthly" },
+    { type: 'daily', label: 'Daily' },
+    { type: 'weekly', label: 'Weekly' },
+    { type: 'monthly', label: 'Monthly' },
   ];
 
   // Handlers
@@ -101,8 +101,8 @@ const AlertDialogForm = (props) => {
         placeholder="Optional"
         variant="outlined"
         defaultValue=""
-        rowsMax={3}
-        rows={3}
+        maxRows={3}
+        minRows={3}
         multiline
       />
     </form>
