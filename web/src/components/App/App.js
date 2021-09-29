@@ -1,50 +1,47 @@
 // React
-import React, { lazy, useEffect, Suspense } from "react";
+import React, { lazy, useEffect, Suspense } from 'react';
 
 // Router
-import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
+import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
 
 // Redux
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector } from 'react-redux';
 
 // Material
 import {
   // Should be fixed in v5 release. See https://bit.ly/2Ali8Ak.
   unstable_createMuiStrictModeTheme as createMuiTheme,
   ThemeProvider,
-} from "@material-ui/core/styles";
-import CssBaseline from "@material-ui/core/CssBaseline";
+} from '@material-ui/core/styles';
+import CssBaseline from '@material-ui/core/CssBaseline';
 
 // Components
-import Layout from "../Layout";
-import Main from "../Main";
-import AuthRedirect from "../AuthRedirect";
+import Layout from '../Layout';
+import Main from '../Main';
+import AuthRedirect from '../AuthRedirect';
 
 // Store
-import { getToken } from "../../store/actions";
+import { getToken } from '../../store/actions';
 
 // Styles
-import { LazyProgress } from "./App-styles";
+import { LazyProgress } from './App-styles';
 
 // Code Splitting
 const lazyComp = {
   Account: lazy(() => {
-    return import("../Account");
+    return import('../Account');
   }),
   Alerts: lazy(() => {
-    return import("../Alerts");
+    return import('../Alerts');
   }),
   Search: lazy(() => {
-    return import("../Search");
+    return import('../Search');
   }),
   SignIn: lazy(() => {
-    return import("../SignIn");
+    return import('../SignIn');
   }),
   SignUp: lazy(() => {
-    return import("../SignUp");
-  }),
-  Wallet: lazy(() => {
-    return import("../Wallet");
+    return import('../SignUp');
   }),
 };
 
@@ -68,7 +65,6 @@ const App = () => {
       <Route path="/signup" component={lazyComp.SignUp} />
       <Route path="/main" component={Main} />
       <Route from="/search/web" component={AuthRedirect} />
-      <Route from="/search/wallet" component={AuthRedirect} />
       <Redirect from="/" to="/main" />
     </Switch>
   );
@@ -81,8 +77,6 @@ const App = () => {
         <Route path="/signup" component={lazyComp.SignUp} />
         <Route path="/account" component={lazyComp.Account} />
         <Route path="/search/web" component={lazyComp.Search} />
-        <Route path="/search/wallet" component={lazyComp.Search} />
-        <Route path="/info/wallet" component={lazyComp.Wallet} />
         <Route path="/main" component={Main} />
         <Redirect from="/" to="/main" />
       </Switch>

@@ -22,7 +22,6 @@ import searchReducer from './store/reducers/search';
 import themeReducer from './store/reducers/theme';
 import toastReducer from './store/reducers/toast';
 import userReducer from './store/reducers/user';
-import walletReducer from './store/reducers/wallet';
 
 // App
 import App from './components/App';
@@ -44,7 +43,6 @@ const rootReducer = combineReducers({
   theme: themeReducer,
   toast: toastReducer,
   user: userReducer,
-  wallet: walletReducer,
 });
 
 const store = createStore(

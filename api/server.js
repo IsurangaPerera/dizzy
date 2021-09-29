@@ -26,7 +26,6 @@ const me = require('./routes/me');
 const password = require('./routes/password');
 const search = require('./routes/search');
 const tags = require('./routes/tags');
-const info = require('./routes/info');
 
 // Database
 connectDB();
@@ -57,7 +56,6 @@ app.use('/api/v1/me', me);
 app.use('/api/v1/password', password);
 app.use('/api/v1/search', search);
 app.use('/api/v1/tags', tags);
-app.use('/api/v1/info', info);
 app.use(errorHandler);
 
 // Server

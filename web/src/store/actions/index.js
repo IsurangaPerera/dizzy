@@ -7,8 +7,8 @@ export {
   resetRedirect,
   reset as resetAuth,
   setRedirect,
-} from "./auth/creators";
-export { createToken, getToken, deleteToken } from "./auth/thunks";
+} from './auth/creators';
+export { createToken, getToken, deleteToken } from './auth/thunks';
 
 // Dialog
 export {
@@ -18,20 +18,20 @@ export {
   hideTagDialog,
   showAlertDialog,
   hideAlertDialog,
-} from "./dialog/creators";
+} from './dialog/creators';
 
 // Search
-export { reset as resetSearch } from "./search/creators";
-export { getWalletResults, getWebResults } from "./search/thunks";
+export { reset as resetSearch } from './search/creators';
+export { getWebResults } from './search/thunks';
 
 // Theme
-export { setPaletteType } from "./theme/creators";
+export { setPaletteType } from './theme/creators';
 
 // Toast
-export { showAlert, hideAlert } from "./toast/creators";
+export { showAlert, hideAlert } from './toast/creators';
 
 // User
-export { reset as resetUser } from "./user/creators";
+export { reset as resetUser } from './user/creators';
 export {
   createAccount,
   createAlert,
@@ -43,7 +43,4 @@ export {
   deleteAccount,
   getAlerts as getUserAlerts,
   deleteAlert as deleteUserAlert,
-} from "./user/thunks";
-
-// Wallet
-export { getWalletInfo, getWalletTx } from "./wallet/thunks";
+} from './user/thunks';

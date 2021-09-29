@@ -1,17 +1,17 @@
 // React
-import React from "react";
+import React from 'react';
 
 // Redux
-import { useDispatch } from "react-redux";
+import { useDispatch } from 'react-redux';
 
 // Material
-import { Button } from "@material-ui/core";
+import { Button } from '@material-ui/core';
 
 // Store
-import {getWalletResults, getWebResults} from "../../../store/actions";
+import { getWebResults } from '../../../store/actions';
 
 // Styles
-import { useStyles } from "./MoreResults-styles";
+import { useStyles } from './MoreResults-styles';
 
 const SearchMoreResults = (props) => {
   // Variables
@@ -21,10 +21,8 @@ const SearchMoreResults = (props) => {
 
   // Handlers
   const moreResultsHandler = () => {
-     if (source === "web") {
+    if (source === 'web') {
       dispatch(getWebResults(query, true));
-    } else {
-      dispatch(getWalletResults(query, true));
     }
   };
 

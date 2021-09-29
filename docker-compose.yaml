@@ -1,28 +1,34 @@
 version: '3.3'
 services:
-  nginx:
-    container_name: nginx
+  proxy:
+    container_name: proxy
     build:
-      context: .
-      dockerfile: nginx.Dockerfile
+      context: ./proxy
     links:
       - web
     ports:
       - '80:80'
   mongo:
     container_name: 'mongo'
-    image: mongo:4.0.4
+    image: mongo:5.0-focal
     ports:
       - '27017:27017'
     volumes:
       - mongo-data:/data/db
+      - mongo-config:/data/configdb
+  mongo-express:
+    container_name: 'mongo-express'
+    image: mongo-express
+    ports:
+      - '8081:8081'
+    depends_on:
+      - mongo
   api:
     container_name: api
     links:
       - mongo
     build:
-      context: .
-      dockerfile: api.Dockerfile
+      context: ./api
     volumes:
       - ./api:/app
       - api-node-modules:/app/node_modules
@@ -55,8 +61,7 @@ services:
       - api
     stdin_open: true
     build:
-      context: .
-      dockerfile: web.Dockerfile
+      context: ./web
     volumes:
       - ./web:/app
       - web-node-modules:/app/node_modules
@@ -67,5 +72,6 @@ services:
 
 volumes:
   mongo-data:
+  mongo-config:
   api-node-modules:
   web-node-modules:
