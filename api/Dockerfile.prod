@@ -1,0 +1,7 @@
+FROM node:14-alpine as base
+WORKDIR /app
+COPY package.json .
+COPY package-lock.json .
+RUN npm install -g pm2 && npm ci && npm cache clean --force
+COPY . .
+CMD pm2 start --no-daemon  processes.json
