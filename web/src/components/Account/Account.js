@@ -1,18 +1,18 @@
 // React
-import React from "react";
+import React from 'react';
 
 // Redux
-import { useSelector } from "react-redux";
+import { useSelector } from 'react-redux';
 
 // Material
-import { Typography } from "@material-ui/core";
+import { Typography } from '@material-ui/core';
 
 // Components
-import Form from "./Form";
-import Actions from "./Actions";
+import Form from './Form';
+import Actions from './Actions';
 
 // Styles
-import { useStyles, Switcher } from "./Account-styles";
+import { useStyles, Switcher } from './Account-styles';
 
 export const Account = () => {
   //Variables
@@ -29,7 +29,7 @@ export const Account = () => {
       <Switcher
         question="Interesting search"
         action="Check this out"
-        path="/search?query=wiki"
+        path="/search/web?query=wiki"
       />
       <Actions />
     </div>
