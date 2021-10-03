@@ -2,7 +2,7 @@
 
 Dizzy: A search engine for the visible Dark Web.
 
-## Running
+## Starting
 
 ```zsh
 # In developement
