@@ -1,21 +1,21 @@
 // Components
-import ToastRaw, { toastStyler } from "../ToastRaw";
+import ToastRaw, { toastStyler } from '../ToastRaw';
 
 // Utils
-import { makeStyles, withStyles } from "../../utils";
+import { makeStyles, withStyles } from '../../utils';
 
 const stylesCreator = (theme) => ({
   Default: {
     root: {
-      display: "flex",
-      flexDirection: "column",
-      minHeight: "100%",
+      display: 'flex',
+      flexDirection: 'column',
+      minHeight: '100%',
     },
     container: {
       flexGrow: 1,
-      display: "flex",
-      flexDirection: "column",
-      alignItems: "center",
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
     },
   },
   ToastRaw: toastStyler(theme).Default,

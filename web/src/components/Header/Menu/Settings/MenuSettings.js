@@ -1,18 +1,18 @@
 // React
-import React from "react";
+import React from 'react';
 
 // Router
-import { NavLink } from "react-router-dom";
+import { NavLink } from 'react-router-dom';
 
 // Redux
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector } from 'react-redux';
 
 // Material
 import {
   AccountCircle as AccountIcon,
   Notifications as AlertIcon,
   Brightness4 as DarkModeIcon,
-} from "@material-ui/icons";
+} from '@material-ui/icons';
 import {
   List,
   ListItem,
@@ -21,27 +21,27 @@ import {
   ListItemSecondaryAction,
   ListSubheader,
   Switch,
-} from "@material-ui/core";
+} from '@material-ui/core';
 
 // Store
-import { setPaletteType } from "../../../../store/actions";
+import { setPaletteType } from '../../../../store/actions';
 
 // Styles
-import { useStyles } from "./MenuSettings-styles";
+import { useStyles } from './MenuSettings-styles';
 
 const MenuSettings = (props) => {
   // Variables
   const classes = useStyles();
   const dispatch = useDispatch();
-  const isDark = useSelector((state) => state.theme.palette.type === "dark");
+  const isDark = useSelector((state) => state.theme.palette.type === 'dark');
   const { onClose, isAuth } = props;
 
   // Handlers
   const toggleDarkModeHandler = (event) => {
     if (event.target.checked) {
-      dispatch(setPaletteType("dark"));
+      dispatch(setPaletteType('dark'));
     } else {
-      dispatch(setPaletteType("light"));
+      dispatch(setPaletteType('light'));
     }
   };
 
@@ -63,16 +63,17 @@ const MenuSettings = (props) => {
   }
 
   let alerts = null;
-  if (isAuth) {
-    alerts = (
-      <ListItem button component={NavLink} to="/alerts" onClick={onClose}>
-        <ListItemIcon>
-          <AlertIcon />
-        </ListItemIcon>
-        <ListItemText primary="Alerts" />
-      </ListItem>
-    );
-  }
+  // TODO: Uncommment when alerts are implemented
+  // if (isAuth) {
+  //   alerts = (
+  //     <ListItem button component={NavLink} to="/alerts" onClick={onClose}>
+  //       <ListItemIcon>
+  //         <AlertIcon />
+  //       </ListItemIcon>
+  //       <ListItemText primary="Alerts" />
+  //     </ListItem>
+  //   );
+  // }
 
   const darkMode = (
     <ListItem>

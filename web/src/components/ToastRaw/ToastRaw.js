@@ -54,6 +54,6 @@ ToastRaw.propTypes = {
 };
 
 // Dynamic styling
-ToastRaw.styledAd = 'TableRaw';
+ToastRaw.styledAs = 'ToastRaw';
 
 export default ToastRaw;

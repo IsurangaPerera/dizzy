@@ -1,27 +1,27 @@
 // React
-import React from "react";
+import React from 'react';
 
 // Material
 import {
   Info as AboutUsIcon,
   LocalLibrary as ResearchIcon,
-} from "@material-ui/icons";
+} from '@material-ui/icons';
 import {
   List,
   ListItem,
   ListItemIcon,
   ListItemText,
   ListSubheader,
-} from "@material-ui/core";
+} from '@material-ui/core';
 
 // Styles
-import { useStyles } from "./MenuInfo-styles";
+import { useStyles } from './MenuInfo-styles';
 
 const MenuInfo = () => {
   // Variables
   const classes = useStyles();
-  const aboutLink = "https://qcri.github.io/cibr/";
-  const researchLink = "https://qcri.github.io/cibr/research.html";
+  const aboutLink = 'https://cibr.qcri.org';
+  const researchLink = 'https://cibr.qcri.org/research.html';
 
   //JSX
   const header = (
