@@ -1,15 +1,15 @@
 // React
-import React from "react";
+import React from 'react';
 
 // PropTypes
-import PropTypes from "prop-types";
+import PropTypes from 'prop-types';
 
 // Material
-import { Container, Paper, Table, TableContainer } from "@material-ui/core";
+import { Container, Paper, Table, TableContainer } from '@material-ui/core';
 
 // Components
-import Header from "./Header";
-import Body from "./Body";
+import Header from './Header';
+import Body from './Body';
 
 const TableRaw = (props) => {
   // Variables
@@ -45,5 +45,8 @@ TableRaw.propTypes = {
     table: PropTypes.string.isRequired,
   }),
 };
+
+// Dynamic styling
+TableRaw.styledAs = 'TableRaw';
 
 export default TableRaw;

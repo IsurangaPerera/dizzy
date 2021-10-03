@@ -1,28 +1,28 @@
 // React
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from 'react';
 
 // PropTypes
-import PropTypes from "prop-types";
+import PropTypes from 'prop-types';
 
 // Redux
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector } from 'react-redux';
 
 // Router
-import { useHistory } from "react-router-dom";
+import { useHistory } from 'react-router-dom';
 
 // Material
-import SearchIcon from "@material-ui/icons/Search";
-import { Divider, IconButton, InputBase, Paper } from "@material-ui/core";
+import SearchIcon from '@material-ui/icons/Search';
+import { Divider, IconButton, InputBase, Paper } from '@material-ui/core';
 
 // Store
-import { setRedirect } from "../../store/actions";
+import { setRedirect } from '../../store/actions';
 
 const SearchBoxRaw = (props) => {
   // Variables
   const { classes } = props;
   const dispatch = useDispatch();
   const history = useHistory();
-  const [query, setQuery] = useState("");
+  const [query, setQuery] = useState('');
   const lastQuery = useSelector((state) => state.search.data.query);
   const isAuth = useSelector((state) => state.auth.data.token !== null);
 
@@ -39,16 +39,16 @@ const SearchBoxRaw = (props) => {
 
   const querySubmitHandler = (event) => {
     event.preventDefault();
-    if (query.trim() !== "") {
+    if (query.trim() !== '') {
       const location = {
-        pathname: "/search/web",
-        search: "?query=" + query,
+        pathname: '/search/web',
+        search: '?query=' + query,
       };
       if (isAuth) {
         history.push(location);
       } else {
         dispatch(setRedirect(location));
-        history.push("/signin");
+        history.push('/signin');
       }
     }
   };
@@ -87,5 +87,8 @@ SearchBoxRaw.propTypes = {
     input: PropTypes.string.isRequired,
   }),
 };
+
+// Dynamic styling
+SearchBoxRaw.styledAs = 'SearchBoxRaw';
 
 export default SearchBoxRaw;

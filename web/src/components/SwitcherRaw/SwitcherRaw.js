@@ -1,14 +1,14 @@
 // React
-import React from "react";
+import React from 'react';
 
 // PropTypes
-import PropTypes from "prop-types";
+import PropTypes from 'prop-types';
 
 // Router
-import { NavLink } from "react-router-dom";
+import { NavLink } from 'react-router-dom';
 
 // Material
-import { Link, Paper, Typography } from "@material-ui/core";
+import { Link, Paper, Typography } from '@material-ui/core';
 
 const SwitcherRaw = (props) => {
   // Variables
@@ -56,5 +56,8 @@ SwitcherRaw.propTypes = {
     paper: PropTypes.string.isRequired,
   }),
 };
+
+// Dynamic styling
+SwitcherRaw.styledAs = 'SwitcherRaw';
 
 export default SwitcherRaw;

@@ -6,10 +6,10 @@ Dizzy: A search engine for the visible Dark Web.
 
 ```zsh
 # In developement
-docker-compose up --build --detach
+docker-compose -f docker-compose.dev.yml up --build --detach
 
 # In production
-docker-compose -f docker-compose.yml up --build --detach
+docker-compose -f docker-compose.prod.yml up --build --detach
 ```
 
 ## Stopping
@@ -17,9 +17,9 @@ docker-compose -f docker-compose.yml up --build --detach
 ```zsh
 # In developement
 # Add --volumes to remove named vols
-docker-compose down
+docker-compose -f docker-compose.dev.yml down
 
 # In production
 # Remove all images for a clean start
-docker-compose -f docker-compose.yml down --rmi all
+docker-compose -f docker-compose.prod.yml down --rmi all
 ```

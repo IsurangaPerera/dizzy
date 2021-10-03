@@ -34,4 +34,7 @@ LogoRaw.propTypes = {
   }),
 };
 
+// Dynamic styling
+LogoRaw.styledAs = 'LogoRaw';
+
 export default LogoRaw;

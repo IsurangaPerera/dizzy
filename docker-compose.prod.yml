@@ -7,16 +7,14 @@ services:
     links:
       - web
     ports:
-      - '80:80'
+      - '8080:80'
     restart: always
   mongo:
     container_name: 'mongo'
     image: mongo:5.0-focal
-    ports:
-      - '27017:27017'
     volumes:
-      - ./mongo/data:/data/db
-      - ./mongo/config:/data/configdb
+      - mongo-data:/data/db
+      - mongo-config:/data/configdb
     restart: always
   api:
     container_name: api
@@ -46,8 +44,6 @@ services:
       SMTP_PASSWORD: 'd90003bf257b39'
       FROM_EMAIL: 'no-reply@dizzy.cibr.qcri.org'
       FROM_NAME: 'Dizzy'
-    ports:
-      - '5000:5000'
     restart: always
   web:
     container_name: web
@@ -59,6 +55,8 @@ services:
       dockerfile: Dockerfile.prod
     environment:
       NODE_ENV: 'production'
-    ports:
-      - '3000:80'
     restart: always
+
+volumes:
+  mongo-data:
+  mongo-config:

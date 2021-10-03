@@ -1,18 +1,18 @@
 // React
-import React from "react";
+import React from 'react';
 
 // PropTypes
-import PropTypes from "prop-types";
+import PropTypes from 'prop-types';
 
 // Redux
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector } from 'react-redux';
 
 // Material
-import { Snackbar } from "@material-ui/core";
-import { Alert } from "@material-ui/lab";
+import { Snackbar } from '@material-ui/core';
+import { Alert } from '@material-ui/lab';
 
 // Store
-import { hideAlert } from "../../store/actions";
+import { hideAlert } from '../../store/actions';
 
 const ToastRaw = (props) => {
   // Variables
@@ -52,5 +52,8 @@ ToastRaw.propTypes = {
     root: PropTypes.string.isRequired,
   }),
 };
+
+// Dynamic styling
+ToastRaw.styledAd = 'TableRaw';
 
 export default ToastRaw;

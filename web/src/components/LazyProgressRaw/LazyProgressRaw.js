@@ -1,11 +1,11 @@
 // React
-import React from "react";
+import React from 'react';
 
 // PropTypes
-import PropTypes from "prop-types";
+import PropTypes from 'prop-types';
 
 // Material
-import { CircularProgress } from "@material-ui/core";
+import { CircularProgress } from '@material-ui/core';
 
 export const LazyProgressRaw = (props) => {
   // Variables
@@ -26,5 +26,8 @@ LazyProgressRaw.propTypes = {
     root: PropTypes.string.isRequired,
   }),
 };
+
+// Dynamic styling
+LazyProgressRaw.styledAs = 'LazyProgressRaw';
 
 export default LazyProgressRaw;
