@@ -1,20 +1,24 @@
 // React
-import React from "react";
+import React from 'react';
 
 // Router
-import { useHistory } from "react-router-dom";
+import { useHistory } from 'react-router-dom';
 
 // Redux
-import { useDispatch } from "react-redux";
+import { useDispatch } from 'react-redux';
 
 // Material
-import { Button } from "@material-ui/core";
+import { Button } from '@material-ui/core';
 
 // Store
-import { deleteAccount, deleteToken } from "../../../store/actions";
+import {
+  deleteAccount,
+  deleteToken,
+  showPromptDialog,
+} from '../../../store/actions';
 
 // Styles
-import { useStyles } from "./AccountActions-styles";
+import { useStyles } from './AccountActions-styles';
 
 const AccountActions = (props) => {
   // Variables
@@ -26,13 +30,14 @@ const AccountActions = (props) => {
   const signOutHandler = (event) => {
     event.preventDefault();
     dispatch(deleteToken());
-    history.push("/main");
+    history.push('/main');
   };
 
   const deleteAccountHandler = (event) => {
     event.preventDefault();
-    dispatch(deleteAccount());
-    history.push("/main");
+    dispatch(showPromptDialog());
+    //dispatch(deleteAccount());
+    //history.push("/main");
   };
 
   // JSX

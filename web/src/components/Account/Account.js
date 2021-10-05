@@ -12,7 +12,7 @@ import Form from './Form';
 import Actions from './Actions';
 
 // Styles
-import { useStyles, Switcher } from './Account-styles';
+import { useStyles, Switcher, PromptDialog } from './Account-styles';
 
 export const Account = () => {
   //Variables
@@ -32,6 +32,7 @@ export const Account = () => {
         path="/search/web?query=wiki"
       />
       <Actions />
+      <PromptDialog />
     </div>
   );
 

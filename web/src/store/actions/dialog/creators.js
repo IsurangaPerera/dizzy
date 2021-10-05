@@ -1,5 +1,5 @@
 // Types
-import * as types from "./types";
+import * as types from './types';
 
 // Show
 export const showFeedbackDialog = () => ({
@@ -11,9 +11,13 @@ export const showTagDialog = (pageId) => ({
   payload: pageId,
 });
 
-export const showAlertDialog = (query = "") => ({
+export const showAlertDialog = (query = '') => ({
   type: types.SHOW_ALERT_DIALOG,
   payload: query,
+});
+
+export const showPromptDialog = () => ({
+  type: types.SHOW_PROMPT_DIALOG,
 });
 
 // Hide
@@ -27,6 +31,10 @@ export const hideTagDialog = () => ({
 
 export const hideAlertDialog = () => ({
   type: types.HIDE_ALERT_DIALOG,
+});
+
+export const hidePromptDialog = () => ({
+  type: types.HIDE_PROMPT_DIALOG,
 });
 
 // Reset

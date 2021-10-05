@@ -18,6 +18,8 @@ export {
   hideTagDialog,
   showAlertDialog,
   hideAlertDialog,
+  showPromptDialog,
+  hidePromptDialog,
 } from './dialog/creators';
 
 // Search
