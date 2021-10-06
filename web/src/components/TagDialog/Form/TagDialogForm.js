@@ -42,7 +42,7 @@ const TagDialogForm = (props) => {
   ];
 
   const categories = [
-    { type: 'crypto-services', label: 'Cryptocurrency service' },
+    { type: 'crypto-service', label: 'Cryptocurrency service' },
     { type: 'index', label: 'Index, link list, or similar' },
     { type: 'marketplace', label: 'Marketplace' },
     { type: 'pornography', label: 'Pornography' },

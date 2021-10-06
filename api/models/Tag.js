@@ -10,7 +10,7 @@ const TagSchema = new mongoose.Schema({
     type: String,
     required: [true, 'Please select a category'],
     enum: [
-      'crypto-services',
+      'crypto-service',
       'index',
       'marketplace',
       'pornography',
