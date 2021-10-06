@@ -1,6 +1,5 @@
 // Components
 import SwitcherRaw, { switcherStyler } from '../SwitcherRaw';
-import PromptDialogRaw, { promptDialogStyler } from '../PromptDialogRaw';
 
 // Utils
 import { makeStyles, withStyles } from '../../utils';
@@ -27,7 +26,6 @@ export const stylesCreator = (theme) => ({
     },
   },
   SwitcherRaw: switcherStyler(theme).Default,
-  PromptDialogRaw: promptDialogStyler(theme).Default,
 });
 
 // Local
@@ -35,4 +33,3 @@ export const useStyles = makeStyles(stylesCreator);
 
 // HOCs
 export const Switcher = withStyles(stylesCreator, SwitcherRaw);
-export const PromptDialog = withStyles(stylesCreator, PromptDialogRaw);

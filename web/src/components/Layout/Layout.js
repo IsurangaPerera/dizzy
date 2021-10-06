@@ -1,18 +1,18 @@
 // React
-import React from "react";
+import React from 'react';
 
 // Material
-import { Container } from "@material-ui/core";
+import { Container } from '@material-ui/core';
 
 // Components
-import Header from "../Header";
-import Footer from "../Footer";
-import FeedbackDialog from "../FeedbackDialog";
-import TagDialog from "../TagDialog";
-import AlertDialog from "../AlertDialog";
+import Header from '../Header';
+import Footer from '../Footer';
+import FeedbackDialog from '../FeedbackDialog';
+import TagDialog from '../TagDialog';
+import AlertDialog from '../AlertDialog';
 
 // Styles
-import { useStyles, Toast } from "./Layout-styles";
+import { useStyles, Toast } from './Layout-styles';
 
 export const Layout = (props) => {
   // Variables

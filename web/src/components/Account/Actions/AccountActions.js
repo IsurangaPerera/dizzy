@@ -14,11 +14,12 @@ import { Button } from '@material-ui/core';
 import {
   deleteAccount,
   deleteToken,
+  hidePromptDialog,
   showPromptDialog,
 } from '../../../store/actions';
 
 // Styles
-import { useStyles } from './AccountActions-styles';
+import { useStyles, PromptDialog } from './AccountActions-styles';
 
 const AccountActions = (props) => {
   // Variables
@@ -33,11 +34,16 @@ const AccountActions = (props) => {
     history.push('/main');
   };
 
+  const confirmDeleteAccountHandler = (event) => {
+    event.preventDefault();
+    dispatch(hidePromptDialog());
+    dispatch(deleteAccount());
+    history.push('/main');
+  };
+
   const deleteAccountHandler = (event) => {
     event.preventDefault();
     dispatch(showPromptDialog());
-    //dispatch(deleteAccount());
-    //history.push("/main");
   };
 
   // JSX
@@ -63,6 +69,7 @@ const AccountActions = (props) => {
       >
         Delete Account
       </Button>
+      <PromptDialog onConfirm={confirmDeleteAccountHandler} />
     </div>
   );
 

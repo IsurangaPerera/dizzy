@@ -25,17 +25,13 @@ import { hidePromptDialog } from '../../store/actions';
 
 const PromptDialogRaw = (props) => {
   // Variables
-  const { classes } = props;
+  const { classes, onConfirm } = props;
   const dispatch = useDispatch();
   const open = useSelector((state) => state.dialog.prompt.open);
 
   // Handlers
   const togglePromptHandler = () => {
     dispatch(hidePromptDialog());
-  };
-
-  const confirmActionHandler = () => {
-    console.log('confirmActionHandler');
   };
 
   //JSX
@@ -46,7 +42,7 @@ const PromptDialogRaw = (props) => {
       onClose={togglePromptHandler}
       fullWidth
     >
-      <DialogTitle disableTypography className={classes.root}>
+      <DialogTitle disableTypography className={classes.title}>
         <Typography variant="h6">Delete your account?</Typography>
         <IconButton className={classes.button} onClick={togglePromptHandler}>
           <CloseIcon />
@@ -54,15 +50,14 @@ const PromptDialogRaw = (props) => {
       </DialogTitle>
       <DialogContent dividers>
         <DialogContentText>
-          All of your account data will be permanently deleted. Do you want to
-          proceed?
+          All your data will be permanently deleted. Do you want to proceed?
         </DialogContentText>
       </DialogContent>
       <DialogActions className={classes.actions}>
         <Button onClick={togglePromptHandler} color="primary">
           Cancel
         </Button>
-        <Button onClick={confirmActionHandler} color="secondary">
+        <Button onClick={onConfirm} color="secondary">
           Yes
         </Button>
       </DialogActions>
@@ -76,7 +71,11 @@ const PromptDialogRaw = (props) => {
 PromptDialogRaw.propTypes = {
   classes: PropTypes.shape({
     root: PropTypes.string.isRequired,
+    title: PropTypes.string.isRequired,
+    button: PropTypes.string.isRequired,
+    actions: PropTypes.string.isRequired,
   }),
+  onConfirm: PropTypes.func.isRequired,
 };
 
 // Dynamic styling
