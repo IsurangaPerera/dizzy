@@ -1,26 +1,26 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 
 const TagSchema = new mongoose.Schema({
   safety: {
     type: String,
-    required: [true, "Please select a saftey class"],
-    enum: ["benign", "suspicious", "malicious"],
+    required: [true, 'Please select a saftey class'],
+    enum: ['benign', 'malicious'],
   },
   category: {
     type: String,
-    required: [true, "Please select a category"],
+    required: [true, 'Please select a category'],
     enum: [
-      "social_network",
-      "marketplace",
-      "multimedia",
-      "wiki",
-      "forum",
-      "other",
+      'crypto-service',
+      'index',
+      'marketplace',
+      'pornography',
+      'forum',
+      'other',
     ],
   },
   comments: {
     type: String,
-    default: "",
+    default: '',
   },
   createdAt: {
     type: Date,
@@ -28,14 +28,14 @@ const TagSchema = new mongoose.Schema({
   },
   user: {
     type: mongoose.Schema.ObjectId,
-    ref: "User",
+    ref: 'User',
     required: true,
     select: false,
   },
   page: {
     type: String,
-    required: [true, "Please provide a page id"],
+    required: [true, 'Please provide a page id'],
   },
 });
 
-module.exports = mongoose.model("Tag", TagSchema);
+module.exports = mongoose.model('Tag', TagSchema);

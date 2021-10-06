@@ -38,15 +38,14 @@ const TagDialogForm = (props) => {
 
   const safety = [
     { type: 'benign', label: 'Benign' },
-    { type: 'suspicious', label: 'Suspicious' },
     { type: 'malicious', label: 'Malicious' },
   ];
 
   const categories = [
-    { type: 'social_network', label: 'Social Network' },
+    { type: 'crypto-service', label: 'Cryptocurrency service' },
+    { type: 'index', label: 'Index, link list, or similar' },
     { type: 'marketplace', label: 'Marketplace' },
-    { type: 'multimedia', label: 'Multimedia' },
-    { type: 'wiki', label: 'Wiki' },
+    { type: 'pornography', label: 'Pornography' },
     { type: 'forum', label: 'Forum' },
     { type: 'other', label: 'Other' },
   ];
