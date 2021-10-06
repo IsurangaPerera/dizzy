@@ -1,8 +1,8 @@
 // Types
-import * as types from "../actions/dialog/types";
+import * as types from '../actions/dialog/types';
 
 // Shared
-import { updateObject } from "../../utils";
+import { updateObject } from '../../utils';
 
 // State
 const initialState = {
@@ -16,6 +16,9 @@ const initialState = {
   alert: {
     open: false,
     query: null,
+  },
+  prompt: {
+    open: false,
   },
 };
 
@@ -45,6 +48,13 @@ const reducer = (state = initialState, action) => {
         }),
       });
     }
+    case types.SHOW_PROMPT_DIALOG: {
+      return updateObject(state, {
+        prompt: updateObject(state.prompt, {
+          open: true,
+        }),
+      });
+    }
     // Hide
     case types.HIDE_FEEDBACK_DIALOG: {
       return updateObject(state, {
@@ -63,6 +73,13 @@ const reducer = (state = initialState, action) => {
     case types.HIDE_ALERT_DIALOG: {
       return updateObject(state, {
         alert: updateObject(state.alert, {
+          open: false,
+        }),
+      });
+    }
+    case types.HIDE_PROMPT_DIALOG: {
+      return updateObject(state, {
+        prompt: updateObject(state.prompt, {
           open: false,
         }),
       });

@@ -1,20 +1,25 @@
 // React
-import React from "react";
+import React from 'react';
 
 // Router
-import { useHistory } from "react-router-dom";
+import { useHistory } from 'react-router-dom';
 
 // Redux
-import { useDispatch } from "react-redux";
+import { useDispatch } from 'react-redux';
 
 // Material
-import { Button } from "@material-ui/core";
+import { Button } from '@material-ui/core';
 
 // Store
-import { deleteAccount, deleteToken } from "../../../store/actions";
+import {
+  deleteAccount,
+  deleteToken,
+  hidePromptDialog,
+  showPromptDialog,
+} from '../../../store/actions';
 
 // Styles
-import { useStyles } from "./AccountActions-styles";
+import { useStyles, PromptDialog } from './AccountActions-styles';
 
 const AccountActions = (props) => {
   // Variables
@@ -26,13 +31,19 @@ const AccountActions = (props) => {
   const signOutHandler = (event) => {
     event.preventDefault();
     dispatch(deleteToken());
-    history.push("/main");
+    history.push('/main');
+  };
+
+  const confirmDeleteAccountHandler = (event) => {
+    event.preventDefault();
+    dispatch(hidePromptDialog());
+    dispatch(deleteAccount());
+    history.push('/main');
   };
 
   const deleteAccountHandler = (event) => {
     event.preventDefault();
-    dispatch(deleteAccount());
-    history.push("/main");
+    dispatch(showPromptDialog());
   };
 
   // JSX
@@ -58,6 +69,7 @@ const AccountActions = (props) => {
       >
         Delete Account
       </Button>
+      <PromptDialog onConfirm={confirmDeleteAccountHandler} />
     </div>
   );
 

@@ -1,8 +1,8 @@
 // React
-import React, { useRef } from "react";
+import React, { useRef } from 'react';
 
 // Redux
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector } from 'react-redux';
 
 // Material
 import {
@@ -11,17 +11,17 @@ import {
   DialogActions,
   DialogContent,
   DialogContentText,
-} from "@material-ui/core";
+} from '@material-ui/core';
 
 // Components
-import Title from "./Title";
-import Form from "./Form";
+import Title from './Title';
+import Form from './Form';
 
 // Store
-import { hideTagDialog } from "../../store/actions";
+import { hideTagDialog } from '../../store/actions';
 
 // Styles
-import { useStyles } from "./TagDialog-styles";
+import { useStyles } from './TagDialog-styles';
 
 const TagDialog = () => {
   // Variables
@@ -40,8 +40,8 @@ const TagDialog = () => {
     // Instead, creating a custom event using the old-fashioned way.
     // This is compatible with all browsers, including IE.
     // See https://stackoverflow.com/a/28907911
-    const submitEvent = document.createEvent("Event");
-    submitEvent.initEvent("submit", true, true);
+    const submitEvent = document.createEvent('Event');
+    submitEvent.initEvent('submit', true, true);
     formRef.current.dispatchEvent(submitEvent);
   };
 
