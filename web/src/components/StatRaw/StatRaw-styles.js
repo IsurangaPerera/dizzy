@@ -1,12 +1,11 @@
 export const stylesCreator = (theme) => ({
   Default: {
     root: {
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
       margin: theme.spacing(2),
-    },
-    link: {
-      '&:hover': {
-        textDecoration: 'none',
-      },
+      width: 120,
     },
   },
 });

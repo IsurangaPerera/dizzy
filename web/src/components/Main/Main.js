@@ -8,7 +8,7 @@ import { useDispatch } from 'react-redux';
 import { resetSearch } from '../../store/actions';
 
 // Styles
-import { useStyles, Logo, SearchBox } from './Main-styles';
+import { useStyles, Logo, SearchBox, Stat } from './Main-styles';
 
 export const Main = () => {
   // Variables
@@ -25,6 +25,12 @@ export const Main = () => {
     <div className={styles.root}>
       <Logo />
       <SearchBox />
+      <div className={styles.stats}>
+        <Stat value={50300000} text="Pages" />
+        <Stat value={38111} text="Domains" />
+        <Stat value={154400} text="Images" />
+        <Stat value={50234} text="Tokens" />
+      </div>
     </div>
   );
 
