@@ -25,7 +25,7 @@ import { hidePromptDialog } from '../../store/actions';
 
 const PromptDialogRaw = (props) => {
   // Variables
-  const { classes, onConfirm } = props;
+  const { classes, title, content, onConfirm } = props;
   const dispatch = useDispatch();
   const open = useSelector((state) => state.dialog.prompt.open);
 
@@ -43,15 +43,13 @@ const PromptDialogRaw = (props) => {
       fullWidth
     >
       <DialogTitle disableTypography className={classes.title}>
-        <Typography variant="h6">Delete your account?</Typography>
+        <Typography variant="h6">{title}</Typography>
         <IconButton className={classes.button} onClick={togglePromptHandler}>
           <CloseIcon />
         </IconButton>
       </DialogTitle>
       <DialogContent dividers>
-        <DialogContentText>
-          All your data will be permanently deleted. Do you want to proceed?
-        </DialogContentText>
+        <DialogContentText>{content}</DialogContentText>
       </DialogContent>
       <DialogActions className={classes.actions}>
         <Button onClick={togglePromptHandler} color="primary">
@@ -75,6 +73,8 @@ PromptDialogRaw.propTypes = {
     button: PropTypes.string.isRequired,
     actions: PropTypes.string.isRequired,
   }),
+  title: PropTypes.string.isRequired,
+  content: PropTypes.string.isRequired,
   onConfirm: PropTypes.func.isRequired,
 };
 

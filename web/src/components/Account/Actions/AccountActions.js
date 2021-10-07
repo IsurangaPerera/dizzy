@@ -69,7 +69,11 @@ const AccountActions = (props) => {
       >
         Delete Account
       </Button>
-      <PromptDialog onConfirm={confirmDeleteAccountHandler} />
+      <PromptDialog
+        title="Delete Account"
+        content="Are you sure you want to delete your account?"
+        onConfirm={confirmDeleteAccountHandler}
+      />
     </div>
   );
 
