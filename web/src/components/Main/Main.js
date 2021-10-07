@@ -4,9 +4,6 @@ import React, { useEffect } from 'react';
 // Redux
 import { useDispatch } from 'react-redux';
 
-// Material
-import { Typography } from '@material-ui/core';
-
 // Store
 import { resetSearch } from '../../store/actions';
 
@@ -27,9 +24,6 @@ export const Main = () => {
   const view = (
     <div className={styles.root}>
       <Logo />
-      <Typography className={styles.typography}>
-        Search the Visible Dark Web!
-      </Typography>
       <SearchBox />
     </div>
   );

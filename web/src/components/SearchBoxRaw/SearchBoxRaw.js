@@ -19,7 +19,7 @@ import { setRedirect } from '../../store/actions';
 
 const SearchBoxRaw = (props) => {
   // Variables
-  const { classes } = props;
+  const { classes, placeholder = 'Search the dark web' } = props;
   const dispatch = useDispatch();
   const history = useHistory();
   const [query, setQuery] = useState('');
@@ -66,6 +66,7 @@ const SearchBoxRaw = (props) => {
           className={classes.input}
           type="search"
           value={query}
+          placeholder={placeholder}
           onChange={queryChangeHandler}
         />
         <Divider className={classes.divider} orientation="vertical" />
@@ -86,6 +87,7 @@ SearchBoxRaw.propTypes = {
     paper: PropTypes.string.isRequired,
     input: PropTypes.string.isRequired,
   }),
+  placeholder: PropTypes.string,
 };
 
 // Dynamic styling

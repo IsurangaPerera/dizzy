@@ -1,22 +1,22 @@
 // React
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useState } from 'react';
 
 // Redux
-import { useSelector } from "react-redux";
+import { useSelector } from 'react-redux';
 
 // Router
-import { useLocation } from "react-router-dom";
+import { useLocation } from 'react-router-dom';
 
 // Material
-import { Menu as MenuIcon } from "@material-ui/icons";
-import { AppBar, IconButton, Toolbar } from "@material-ui/core";
+import { Menu as MenuIcon } from '@material-ui/icons';
+import { AppBar, IconButton, Toolbar } from '@material-ui/core';
 
 // Components
-import Action from "./Action";
-import Menu from "./Menu";
+import Action from './Action';
+import Menu from './Menu';
 
 // Styles
-import { useStyles, Logo } from "./Header-styles";
+import { useStyles, Logo } from './Header-styles';
 
 const Header = () => {
   // Variables
@@ -24,7 +24,7 @@ const Header = () => {
   const [open, setOpen] = useState(false);
   const location = useLocation();
   const isAuth = useSelector((state) => state.auth.data.token !== null);
-  const showLogo = isAuth && location.pathname !== "/main";
+  const showLogo = isAuth && location.pathname !== '/main';
 
   // Handlers
   const toggleMenuHandler = () => {
@@ -50,7 +50,7 @@ const Header = () => {
           >
             <MenuIcon />
           </IconButton>
-          {showLogo ? <Logo variant="h5" /> : null}
+          {showLogo ? <Logo height={25} /> : null}
           <Action isAuth={isAuth} />
         </Toolbar>
       </AppBar>
