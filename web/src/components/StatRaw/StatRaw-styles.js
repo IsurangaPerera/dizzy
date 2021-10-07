@@ -5,7 +5,7 @@ export const stylesCreator = (theme) => ({
       flexDirection: 'column',
       alignItems: 'center',
       margin: theme.spacing(2),
-      width: 120,
+      width: 82,
     },
   },
 });

@@ -1,13 +1,13 @@
 export const stylesCreator = (theme) => ({
   Default: {
     root: {
-      width: "100%",
+      width: '100%',
       maxWidth: 460,
       paddingLeft: theme.spacing(2),
       paddingRight: theme.spacing(2),
     },
     paper: {
-      display: "flex",
+      display: 'flex',
     },
     input: {
       flex: 1,
