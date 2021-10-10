@@ -1,5 +1,5 @@
 // Components
-import StatRaw, { statStyler } from '../../StatRaw';
+import FeatureRaw, { featureStyler } from '../../FeatureRaw';
 
 // Utils
 import { makeStyles, withStyles } from '../../../utils';
@@ -14,7 +14,7 @@ export const stylesCreator = (theme) => ({
       textAlign: 'left',
       width: '100%',
       maxWidth: 460,
-      marginTop: theme.spacing(8),
+      marginTop: theme.spacing(6),
       paddingTop: theme.spacing(2),
       paddingLeft: theme.spacing(2),
       paddingRight: theme.spacing(2),
@@ -27,22 +27,24 @@ export const stylesCreator = (theme) => ({
       paddingLeft: theme.spacing(2),
       paddingRight: theme.spacing(2),
     },
-    stats: {
+    opensource: {
       display: 'flex',
-      alignItems: 'center',
-      alignContent: 'center',
+      flexDirection: 'column',
+      justifyContent: 'center',
       flexWrap: 'wrap',
-      justifyContent: 'flex-first',
-      marginTop: theme.spacing(1),
+      marginTop: theme.spacing(3),
+      marginBottom: theme.spacing(9),
+      paddingLeft: theme.spacing(2),
+      paddingRight: theme.spacing(2),
       width: '100%',
       maxWidth: 460,
     },
   },
-  StatRaw: statStyler(theme).Default,
+  FeatureRaw: featureStyler(theme).Default,
 });
 
 // Local
 export const useStyles = makeStyles(stylesCreator);
 
 // HOCs
-export const Stat = withStyles(stylesCreator, StatRaw);
+export const Feature = withStyles(stylesCreator, FeatureRaw);

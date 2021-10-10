@@ -9,6 +9,7 @@ import { resetSearch } from '../../store/actions';
 
 // Components
 import Features from './Features';
+import OpenSource from './OpenSource';
 import Stats from './Stats';
 
 // Styles
@@ -31,7 +32,10 @@ export const Main = () => {
       <SearchBox />
       <div className={styles.pitch}>
         <Features />
-        <Stats />
+        <div className={styles.ops}>
+          <Stats />
+          <OpenSource />
+        </div>
       </div>
     </div>
   );

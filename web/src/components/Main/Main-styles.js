@@ -24,6 +24,10 @@ export const stylesCreator = (theme) => ({
       justifyContent: 'space-between',
       flexWrap: 'wrap',
     },
+    ops: {
+      display: 'flex',
+      flexDirection: 'column',
+    },
   },
   LogoRaw: {
     root: {
