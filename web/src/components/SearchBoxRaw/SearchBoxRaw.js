@@ -19,7 +19,7 @@ import { setRedirect } from '../../store/actions';
 
 const SearchBoxRaw = (props) => {
   // Variables
-  const { classes, placeholder = 'Search the dark web' } = props;
+  const { classes, placeholder = 'Search the darkweb' } = props;
   const dispatch = useDispatch();
   const history = useHistory();
   const [query, setQuery] = useState('');

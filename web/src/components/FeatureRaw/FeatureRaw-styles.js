@@ -9,7 +9,7 @@ export const stylesCreator = (theme) => ({
       },
     },
     icon: {
-      fontSize: 36,
+      fontSize: 32,
       marginRight: theme.spacing(2),
     },
   },

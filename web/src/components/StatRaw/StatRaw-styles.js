@@ -3,9 +3,9 @@ export const stylesCreator = (theme) => ({
     root: {
       display: 'flex',
       flexDirection: 'column',
-      alignItems: 'center',
+      alignItems: 'left',
       margin: theme.spacing(2),
-      width: 82,
+      width: 74,
     },
   },
 });
