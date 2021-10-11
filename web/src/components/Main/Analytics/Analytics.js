@@ -5,9 +5,9 @@ import React from 'react';
 import { Typography } from '@material-ui/core';
 
 // Styles
-import { useStyles, Feature } from './Features-styles';
+import { useStyles, Feature } from './Analytics-styles';
 
-const MainFeatures = () => {
+const MainAnalytics = () => {
   // Variables
   const styles = useStyles();
 
@@ -35,4 +35,4 @@ const MainFeatures = () => {
   return view;
 };
 
-export default MainFeatures;
+export default MainAnalytics;

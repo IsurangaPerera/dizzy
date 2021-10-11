@@ -5,9 +5,9 @@ import React from 'react';
 import { Typography } from '@material-ui/core';
 
 // Styles
-import { useStyles, Feature } from './OpenSource-styles';
+import { useStyles, Feature } from './Tech-styles';
 
-const MainOpenSource = () => {
+const MainTech = () => {
   // Variables
   const styles = useStyles();
 
@@ -33,4 +33,4 @@ const MainOpenSource = () => {
   return view;
 };
 
-export default MainOpenSource;
+export default MainTech;

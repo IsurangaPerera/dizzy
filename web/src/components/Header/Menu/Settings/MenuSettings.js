@@ -24,7 +24,7 @@ import {
 } from '@material-ui/core';
 
 // Store
-import { setPaletteType } from '../../../../store/actions';
+import { setThemeMode } from '../../../../store/actions';
 
 // Styles
 import { useStyles } from './MenuSettings-styles';
@@ -39,9 +39,9 @@ const MenuSettings = (props) => {
   // Handlers
   const toggleDarkModeHandler = (event) => {
     if (event.target.checked) {
-      dispatch(setPaletteType('dark'));
+      dispatch(setThemeMode('dark'));
     } else {
-      dispatch(setPaletteType('light'));
+      dispatch(setThemeMode('light'));
     }
   };
 

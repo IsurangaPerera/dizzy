@@ -27,7 +27,7 @@ export { reset as resetSearch } from './search/creators';
 export { getWebResults } from './search/thunks';
 
 // Theme
-export { setPaletteType } from './theme/creators';
+export { getThemeMode, setThemeMode } from './theme/thunks';
 
 // Toast
 export { showAlert, hideAlert } from './toast/creators';

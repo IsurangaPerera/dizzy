@@ -1,5 +1,5 @@
 // React
-import React, { lazy, useEffect, Suspense } from 'react';
+import React, { lazy, useEffect, Suspense, useCallback } from 'react';
 
 // Router
 import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
@@ -21,7 +21,7 @@ import Main from '../Main';
 import AuthRedirect from '../AuthRedirect';
 
 // Store
-import { getToken } from '../../store/actions';
+import { getThemeMode, getToken, setThemeMode } from '../../store/actions';
 
 // Styles
 import { LazyProgress } from './App-styles';
@@ -53,10 +53,28 @@ const App = () => {
   const palette = useSelector((state) => state.theme.palette);
   const theme = createMuiTheme({ palette: palette });
 
+  // Handlers
+  const handleThemeModeChange = useCallback(
+    (event) => {
+      const theme = event.matches ? 'dark' : 'light';
+      dispatch(setThemeMode(theme));
+    },
+    [dispatch]
+  );
+
   // Hooks
   useEffect(() => {
     dispatch(getToken());
-  }, [dispatch]);
+    dispatch(getThemeMode());
+    window
+      .matchMedia('(prefers-color-scheme: dark)')
+      .addEventListener('change', handleThemeModeChange);
+    return () => {
+      window
+        .matchMedia('(prefers-color-scheme: dark)')
+        .removeEventListener('change', handleThemeModeChange);
+    };
+  }, [dispatch, handleThemeModeChange]);
 
   // JSX
   let routes = (

@@ -19,12 +19,12 @@ export const stylesCreator = (theme) => ({
     logo: {
       marginTop: theme.spacing(8),
     },
-    pitch: {
+    features: {
       display: 'flex',
       justifyContent: 'space-between',
       flexWrap: 'wrap',
     },
-    ops: {
+    otherFeatures: {
       display: 'flex',
       flexDirection: 'column',
     },

@@ -8,9 +8,9 @@ import { useDispatch } from 'react-redux';
 import { resetSearch } from '../../store/actions';
 
 // Components
-import Features from './Features';
-import OpenSource from './OpenSource';
+import Analytics from './Analytics';
 import Stats from './Stats';
+import Tech from './Tech';
 
 // Styles
 import { useStyles, Logo, SearchBox } from './Main-styles';
@@ -30,11 +30,11 @@ export const Main = () => {
     <div className={styles.root}>
       <Logo />
       <SearchBox />
-      <div className={styles.pitch}>
-        <Features />
-        <div className={styles.ops}>
+      <div className={styles.features}>
+        <Analytics />
+        <div className={styles.otherFeatures}>
           <Stats />
-          <OpenSource />
+          <Tech />
         </div>
       </div>
     </div>
