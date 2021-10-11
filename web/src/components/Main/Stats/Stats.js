@@ -9,18 +9,18 @@ import { useStyles, Stat } from './Stats-styles';
 
 const MainStats = () => {
   // Variables
-  const styles = useStyles();
+  const classes = useStyles();
 
   // JSX
   const view = (
-    <div className={styles.root}>
-      <Typography className={styles.title} color="primary" variant="h5">
+    <div className={classes.root}>
+      <Typography className={classes.title} color="primary" variant="h5">
         Extended coverage
       </Typography>
-      <Typography className={styles.subtitle}>
+      <Typography className={classes.subtitle}>
         Find what you're looking for in the darkweb
       </Typography>
-      <div className={styles.stats}>
+      <div className={classes.stats}>
         <Stat value={50300000} text="Pages" />
         <Stat value={38111} text="Domains" />
         <Stat value={50234} text="Cryptos" />

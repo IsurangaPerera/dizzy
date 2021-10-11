@@ -9,18 +9,18 @@ import { useStyles, Feature } from './Tech-styles';
 
 const MainTech = () => {
   // Variables
-  const styles = useStyles();
+  const classes = useStyles();
 
   // JSX
   const view = (
-    <div className={styles.root}>
-      <Typography className={styles.title} color="primary" variant="h5">
+    <div className={classes.root}>
+      <Typography className={classes.title} color="primary" variant="h5">
         Open technologies
       </Typography>
-      <Typography className={styles.subtitle}>
+      <Typography className={classes.subtitle}>
         Use, modify, or deploy freely on any platform
       </Typography>
-      <div className={styles.opensource}>
+      <div className={classes.opensource}>
         <Feature iconLigature="code" text="Open-source software on GitHub" />
         <Feature
           iconLigature="cloud_done"

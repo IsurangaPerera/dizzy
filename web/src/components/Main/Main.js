@@ -17,7 +17,7 @@ import { useStyles, Logo, SearchBox } from './Main-styles';
 
 export const Main = () => {
   // Variables
-  const styles = useStyles();
+  const classes = useStyles();
   const dispatch = useDispatch();
 
   // Hooks
@@ -27,12 +27,12 @@ export const Main = () => {
 
   // JSX
   const view = (
-    <div className={styles.root}>
+    <div className={classes.root}>
       <Logo />
       <SearchBox />
-      <div className={styles.features}>
+      <div className={classes.features}>
         <Analytics />
-        <div className={styles.otherFeatures}>
+        <div className={classes.otherFeatures}>
           <Stats />
           <Tech />
         </div>

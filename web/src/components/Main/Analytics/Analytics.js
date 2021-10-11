@@ -9,18 +9,18 @@ import { useStyles, Feature } from './Analytics-styles';
 
 const MainAnalytics = () => {
   // Variables
-  const styles = useStyles();
+  const classes = useStyles();
 
   // JSX
   const view = (
-    <div className={styles.root}>
-      <Typography className={styles.title} color="primary" variant="h5">
+    <div className={classes.root}>
+      <Typography className={classes.title} color="primary" variant="h5">
         Darkweb analytics
       </Typography>
-      <Typography className={styles.subtitle}>
+      <Typography className={classes.subtitle}>
         Get useful insights with your search results
       </Typography>
-      <div className={styles.features}>
+      <div className={classes.features}>
         <Feature iconLigature="category" text="Website categorization" />
         <Feature iconLigature="language" text="Language detection" />
         <Feature iconLigature="content_copy" text="Mirror website detection" />
