@@ -71,7 +71,10 @@ app.listen(
 
 // Cron jobs
 const sendAlerts = require('./jobs/sendAlerts');
+const computeStats = require('./jobs/computeStats');
+
 cron.schedule('0 0 * * *', sendAlerts(host, port));
+//cron.schedule('*/10 * * * * *', computeStats);
 
 // Unhandled errors
 process.on('unhandledRejection', (error, promise) => {
