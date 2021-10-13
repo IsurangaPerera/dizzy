@@ -13,6 +13,8 @@ const path = require('path');
 const rateLimit = require('express-rate-limit');
 const xss = require('xss-clean');
 
+colors.enable();
+
 const limiter = rateLimit({
   windowMs: parseInt(process.env.RATE_LIMIT_WINDOW_MS),
   max: parseInt(process.env.RATE_LIMIT_MAX),
@@ -25,6 +27,7 @@ const feedbacks = require('./routes/feedbacks');
 const me = require('./routes/me');
 const password = require('./routes/password');
 const search = require('./routes/search');
+const statistics = require('./routes/statistics');
 const tags = require('./routes/tags');
 
 // Database
@@ -55,6 +58,7 @@ app.use('/api/v1/feedbacks', feedbacks);
 app.use('/api/v1/me', me);
 app.use('/api/v1/password', password);
 app.use('/api/v1/search', search);
+app.use('/api/v1/statistics', statistics);
 app.use('/api/v1/tags', tags);
 app.use(errorHandler);
 
@@ -71,7 +75,10 @@ app.listen(
 
 // Cron jobs
 const sendAlerts = require('./jobs/sendAlerts');
-cron.schedule('0 0 * * *', sendAlerts(host, port));
+const computeStats = require('./jobs/computeStats');
+
+cron.schedule('0 0 * * *', sendAlerts(host, port)); // Every day at midnight
+cron.schedule('0 0 * * *', computeStats);
 
 // Unhandled errors
 process.on('unhandledRejection', (error, promise) => {

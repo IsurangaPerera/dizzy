@@ -7,12 +7,17 @@ import { useDispatch } from 'react-redux';
 // Store
 import { resetSearch } from '../../store/actions';
 
+// Components
+import Analytics from './Analytics';
+import Stats from './Stats';
+import Tech from './Tech';
+
 // Styles
 import { useStyles, Logo, SearchBox } from './Main-styles';
 
 export const Main = () => {
   // Variables
-  const styles = useStyles();
+  const classes = useStyles();
   const dispatch = useDispatch();
 
   // Hooks
@@ -22,9 +27,16 @@ export const Main = () => {
 
   // JSX
   const view = (
-    <div className={styles.root}>
+    <div className={classes.root}>
       <Logo />
       <SearchBox />
+      <div className={classes.features}>
+        <Analytics />
+        <div className={classes.otherFeatures}>
+          <Stats />
+          <Tech />
+        </div>
+      </div>
     </div>
   );
 

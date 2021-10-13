@@ -15,7 +15,7 @@ import { Link } from '@material-ui/core';
 
 const LogoRaw = (props) => {
   // Variables
-  const { classes, height = 112 } = props;
+  const { classes, height = 100 } = props;
 
   // JSX
   const view = (

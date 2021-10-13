@@ -1,17 +1,17 @@
 // Utils
-import { makeStyles } from "../../../utils";
+import { makeStyles } from '../../../utils';
 
 export const stylesCreator = (theme) => ({
   Default: {
     root: {
-      display: "contents",
+      display: 'contents',
     },
     cell: {
       paddingLeft: 0,
       maxWidth: 120,
-      whiteSpace: "nowrap",
-      overflow: "hidden",
-      textOverflow: "ellipsis",
+      whiteSpace: 'nowrap',
+      overflow: 'hidden',
+      textOverflow: 'ellipsis',
     },
     actions: {
       paddingLeft: 0,
@@ -19,8 +19,8 @@ export const stylesCreator = (theme) => ({
       width: 48,
     },
     padding: {
-      width: theme.spacing(2.5),
-      border: "none",
+      width: 20,
+      border: 'none',
       padding: 0,
     },
   },
