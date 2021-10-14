@@ -18,7 +18,7 @@ const MainTech = () => {
         Open technologies
       </Typography>
       <Typography className={classes.subtitle}>
-        Use, modify, or deploy freely on any platform
+        Clone, deploy, and use freely on any platform
       </Typography>
       <div className={classes.opensource}>
         <Feature iconLigature="code" text="Open-source software on GitHub" />

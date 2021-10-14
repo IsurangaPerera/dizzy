@@ -43,7 +43,7 @@ services:
       RATE_LIMIT_WINDOW_MS: 60000
       RATE_LIMIT_MAX: 100
       MONGO_URI: 'mongodb://mongo:27017/dizzy'
-      ES_URI: 'http://es.toshi.qcri.org'
+      ES_URI: 'http://es.cibr.qcri.org'
       ES_PING_TIMEOUT_MS: 20000
       ES_CRAWLER_INDEX: 'darkweb-tor-index'
       ES_RECRAWLER_INDEX: 'darkweb-tor-recrawler-index'
