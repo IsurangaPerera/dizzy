@@ -20,56 +20,47 @@ const webResults = asyncHandler(async (request, response, next) => {
     size: limit,
     body: {
       query: {
-        bool: {
-          must: {
-            multi_match: {
-              query: query,
-              fields: [
-                'source',
-                'info.tags.cryptocurrency.address.btc',
-                'summary',
-                'info.tags.abuse.report.type',
-                'info.tags.abuse.report.abuser',
-                'info.tags.abuse.report.description',
-              ],
-              operator: 'or',
-            },
-          },
-          filter: {
-            exists: {
-              field: 'info.tags.cryptocurrency.address.btc',
-            },
-          },
+        query_string: {
+          query: `_exists_:data.info.domain_info.safety AND _exists_:data.info.title AND (${query}~${query.length/3})`
+        }
+      },
+      aggs: {
+        mirrorSize: {
+          terms: { field: 'data.info.domain_info.mirror.group', size:20000 },
+          aggs : { domains: { cardinality : { field : 'data.info.domain' } } },
         },
       },
+      _source: ['data.info.title', 'data.info.url', 'data.info.domain_info', 'data.summary', 'data.timestamp']
     },
   });
 
-  // This needs to be written to reflect new search results
   const total = results.body.hits.total.value;
+  const mirrorMap = Object.assign({}, ...results.body.aggregations.mirrorSize.buckets
+      .map((x) => ({[x.key]: x.domains.value})));
+
   const hits = results.body.hits.hits.map((hit) => {
-    const btcAddresses = hit._source.info.tags.cryptocurrency.address.btc;
+    const domainInfo = hit._source.data.info.domain_info;
+    const safety = domainInfo.safety.is_safe? 'benign' : 'malicious';
+    const btcAddresses = domainInfo.attribution? domainInfo.attribution.btc : [];
+
     return {
       id: hit._id,
-      source: hit._source.source,
-      url: hit._source.info.url,
-      title: hit._source.info.title,
-      crawledAt: moment(hit._source.timestamp).utc().toISOString(true),
-      body: hit._source.info.tags.abuse
-        ? hit._source.info.tags.abuse.report.description
-        : hit._source.summary || hit._source.info.title,
+      url: hit._source.data.info.url,
+      title: hit._source.data.info.title,
+      crawledAt: moment(hit._source.data.timestamp).utc().toISOString(true),
+      body: hit._source.data.summary || hit._source.data.info.title,
       info: [
         {
           title: 'Safety',
-          text: 'N/A',
+          text: safety,
         },
         {
           title: 'Category',
-          text: 'N/A',
+          text: domainInfo.category.type,
         },
         {
-          title: 'Dizzy Rank',
-          text: 'N/A',
+          title: 'Mirror Group Size',
+          text:  mirrorMap[domainInfo.mirror.group],
         },
         {
           title: 'Crypto Addresses',
@@ -94,64 +85,6 @@ const webResults = asyncHandler(async (request, response, next) => {
         limit,
       };
     }
-  }
-
-  if (
-    page === 1 &&
-    (query.toUpperCase() === 'wannacry'.toUpperCase() ||
-      query.toUpperCase() ===
-        '12byutpYf1xpH8fR4qBj4833x2t94rSr8X'.toUpperCase())
-  ) {
-    hits.unshift({
-      source: 'tor',
-      url: 'http://dstormer6em3i4km.onion/tag/ransomware',
-      title: 'Ransomware – Daily Stormer',
-      crawledAt: '2020-12-02T13:57:41.784+00:00',
-      body:
-        'Daily Stormer The Most Censored Publication in HistoryAmerican Government Blames the WannaCry Attack on ' +
-        'North KoreaTim Hort | The American government has claimed that North Korean hackers are responsible for ' +
-        'WannaCry.Latest Global Ransomware Attack is Worse Than WannaCry – Using the Same NSA Software!Andrew Anglin ' +
-        '| Cyber warfare: the worst ever warfare idea.NYT Tries to Blame Microsoft for WannaCryAndrew Anglin | ' +
-        'Blame anyone but those responsible.Ransomware Causes Global Meltdown as Impotent Authorities Imply There’s ' +
-        'Something They Can do About ItAndrew Anglin | This is what is known as "getting blown the fuck out.We here ' +
-        'at the Daily Stormer are opposed to violence.',
-      info: [
-        { title: 'Safety', text: 'Benign' },
-        { title: 'Category', text: 'Forum' },
-        { title: 'Dizzy Rank', text: '0.90' },
-        { title: 'Crypto Addresses', text: '1 (Bitcoin)' },
-      ],
-    });
-    hits.unshift({
-      source: 'bitcointalk',
-      url: 'https://bitcointalk.org/index.php?action=profile;u=2904469',
-      title: 'Bitcointalk: 12byutpYf1xpH8fR4qBj4833x2t94rSr8X',
-      crawledAt: '2020-12-02T13:57:41.784+00:00',
-      body: 'username: andrewsmith77 | skype: andrew.77 | email: andrew77@gmail.com',
-      info: [
-        { title: 'Safety', text: 'Benign' },
-        { title: 'Category', text: 'Forum' },
-        { title: 'Dizzy Rank', text: '0.95' },
-        { title: 'Crypto Addresses', text: '1 (Bitcoin)' },
-      ],
-    });
-
-    hits[2] = {
-      source: 'bitcoinabuse',
-      url: 'https://www.bitcoinabuse.com/reports/12byutpYf1xpH8fR4qBj4833x2t94rSr8X?page=4',
-      title: 'Bitcoin Abuse Database: 12byutpYf1xpH8fR4qBj4833x2t94rSr8X',
-      crawledAt: '2020-12-02T13:57:41.784+00:00',
-      body:
-        'From the moment you read this letter, after 60 hours, all your contacts on this email box and in your ' +
-        'instant messengers will receive these clips and files with your correspondence. If you do not want this, ' +
-        'transfer 700$ to our Bitcoin cryptocurrency wallet: 12byutpYf1xpH8fR4qBj4833x2t94rSr8X',
-      info: [
-        { title: 'Safety', text: 'Benign' },
-        { title: 'Category', text: 'Forum' },
-        { title: 'Dizzy Rank', text: '0.90' },
-        { title: 'Crypto Addresses', text: '1 (Bitcoin)' },
-      ],
-    };
   }
 
   response.webResults = {
