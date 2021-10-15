@@ -1,7 +1,7 @@
-const asyncHandler = require("../middleware/async");
-const ErrorResponse = require("../utils/errorResponse");
-const User = require("../models/User");
-const sendTokenResponse = require("../utils/sendTokenResponse");
+const asyncHandler = require('../middleware/async');
+const ErrorResponse = require('../utils/errorResponse');
+const User = require('../models/User');
+const sendTokenResponse = require('../utils/sendTokenResponse');
 
 // @desc      Sign in a user
 // @route     POST /api/v1/auth/signin
@@ -9,17 +9,17 @@ const sendTokenResponse = require("../utils/sendTokenResponse");
 const signin = asyncHandler(async (request, response, next) => {
   const { email, password } = request.body;
   if (!email || !password) {
-    return next(new ErrorResponse("Please provide login credentials", 400));
+    return next(new ErrorResponse('Please provide login credentials', 400));
   }
 
-  const user = await User.findOne({ email }).select("+password");
+  const user = await User.findOne({ email }).select('+password');
   if (!user) {
-    return next(new ErrorResponse("Invalid credentials", 401));
+    return next(new ErrorResponse('Invalid credentials', 401));
   }
 
   const match = await user.matchPassword(password);
   if (!match) {
-    return next(new ErrorResponse("Invalid credentials", 401));
+    return next(new ErrorResponse('Invalid credentials', 401));
   }
 
   sendTokenResponse(user, 200, response);
@@ -29,7 +29,7 @@ const signin = asyncHandler(async (request, response, next) => {
 // @route     GET /api/v1/auth/signout
 // @access    Public
 const signout = asyncHandler(async (request, response, next) => {
-  response.cookie("token", "none", {
+  response.cookie('token', 'none', {
     expires: new Date(
       Date.now() + parseInt(process.env.LOGOUT_COOKIE_EXPIRE_MS, 10)
     ),
