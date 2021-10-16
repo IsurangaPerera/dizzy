@@ -3,14 +3,27 @@ const ErrorResponse = require('../utils/errorResponse');
 const es = require('../services/es');
 const moment = require('moment');
 
+const MAX_RESULTS_IN_PAGE = 25;
+const MAX_MIRROR_GROUP_COUNT = 20000;
+const DEFAULT_PAGE_NUM = 1;
+
+const categories = {
+  'crypto-service': 'Cryptocurrency service',
+  'index': 'Index, link list, or similar',
+  'marketplace': 'Marketplace',
+  'pornography': 'Pornography',
+  'forum': 'Forum',
+  'other': 'Other'
+};
+
 const webResults = asyncHandler(async (request, response, next) => {
   const { query } = request.query;
   if (!query) {
     return next(new ErrorResponse('Please provide a search query', 400));
   }
 
-  const page = parseInt(request.query.page, 10) || 1;
-  const limit = parseInt(request.query.limit, 10) || 25;
+  const page = parseInt(request.query.page, 10) || DEFAULT_PAGE_NUM;
+  const limit = parseInt(request.query.limit, 10) || MAX_RESULTS_IN_PAGE;
   const startIndex = (page - 1) * limit;
   const endIndex = page * limit;
 
@@ -21,12 +34,12 @@ const webResults = asyncHandler(async (request, response, next) => {
     body: {
       query: {
         query_string: {
-          query: `_exists_:data.info.domain_info.language AND _exists_:data.info.title AND (${query}~${query.length/3})`
+          query: `_exists_:data.info.domain_info.language AND (${query}~${query.length/3})`
         }
       },
       aggs: {
         mirrorSize: {
-          terms: { field: 'data.info.domain_info.mirror.group', size:20000 },
+          terms: { field: 'data.info.domain_info.mirror.group', size:MAX_MIRROR_GROUP_COUNT },
           aggs : { domains: { cardinality : { field : 'data.info.domain' } } },
         },
       },
@@ -35,13 +48,19 @@ const webResults = asyncHandler(async (request, response, next) => {
   });
 
   const total = results.body.hits.total.value;
-  const mirrorMap = Object.assign({}, ...results.body.aggregations.mirrorSize.buckets
-      .map((x) => ({[x.key]: x.domains.value})));
+
+  let mirrorMap = {}
+  const buckets = results.body.aggregations.mirrorSize.buckets;
+  for (const obj of buckets) {
+    mirrorMap[obj.key] = obj.domains.value
+  }
 
   const hits = results.body.hits.hits.map((hit) => {
     const domainInfo = hit._source.data.info.domain_info;
-    const safety = domainInfo.safety.is_safe? 'benign' : 'malicious';
-    const btcAddresses = domainInfo.attribution? domainInfo.attribution.btc : [];
+    const safety = domainInfo.safety.is_safe? 'Benign' : 'Malicious';
+    const cryptos = domainInfo.attribution? domainInfo.attribution.btc : [];
+    const languageNames = new Intl.DisplayNames(['en'], {type: 'language'});
+    const mirrors = mirrorMap[domainInfo.mirror.group];
 
     return {
       id: hit._id,
@@ -51,24 +70,28 @@ const webResults = asyncHandler(async (request, response, next) => {
       body: hit._source.data.summary || hit._source.data.info.title,
       info: [
         {
-          title: 'Safety',
+          title: 'Security',
           text: safety,
         },
         {
           title: 'Category',
-          text: domainInfo.category.type,
+          text: categories[domainInfo.category.type],
+        },
+        {
+          title: 'Privacy',
+          text: domainInfo.privacy.js.fingerprinting.is_fingerprinted? 'Tracking' : 'No tracking',
         },
         {
           title: 'Language',
-          text: domainInfo.language,
+          text: languageNames.of(domainInfo.language),
         },
         {
-          title: 'Mirror Group Size',
-          text:  mirrorMap[domainInfo.mirror.group],
+          title: 'Mirroring',
+          text: mirrors > 1? `Yes (${mirrors} domains)` : 'No'
         },
         {
           title: 'Crypto Addresses',
-          text: `${btcAddresses.length} (Bitcoin)`,
+          text: `${cryptos.length} (Bitcoin)`,
         },
       ],
     };
