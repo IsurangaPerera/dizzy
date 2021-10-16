@@ -21,7 +21,7 @@ const webResults = asyncHandler(async (request, response, next) => {
     body: {
       query: {
         query_string: {
-          query: `_exists_:data.info.domain_info.safety AND _exists_:data.info.title AND (${query}~${query.length/3})`
+          query: `_exists_:data.info.domain_info.language AND _exists_:data.info.title AND (${query}~${query.length/3})`
         }
       },
       aggs: {
@@ -57,6 +57,10 @@ const webResults = asyncHandler(async (request, response, next) => {
         {
           title: 'Category',
           text: domainInfo.category.type,
+        },
+        {
+          title: 'Language',
+          text: domainInfo.language,
         },
         {
           title: 'Mirror Group Size',
