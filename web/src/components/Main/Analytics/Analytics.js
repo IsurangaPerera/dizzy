@@ -22,12 +22,12 @@ const MainAnalytics = () => {
       </Typography>
       <div className={classes.features}>
         <Feature iconLigature="category" text="Website categorization" />
-        <Feature iconLigature="language" text="Language detection" />
-        <Feature iconLigature="content_copy" text="Mirror website detection" />
-        <Feature iconLigature="offline_bolt" text="Service status check" />
+        <Feature iconLigature="token" text="Crypto address attribution" />
         <Feature iconLigature="security" text="Malicious website detection" />
         <Feature iconLigature="lock" text="User tracking detection" />
-        <Feature iconLigature="token" text="Crypto address attribution" />
+        {/*<Feature iconLigature="offline_bolt" text="Service status check" />*/}
+        <Feature iconLigature="content_copy" text="Mirror website detection" />
+        {/*<Feature iconLigature="language" text="Language detection" />*/}
       </div>
     </div>
   );
