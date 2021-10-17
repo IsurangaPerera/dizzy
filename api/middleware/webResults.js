@@ -6,6 +6,7 @@ const moment = require('moment');
 const MAX_RESULTS_IN_PAGE = 25;
 const MAX_MIRROR_GROUP_COUNT = 20000;
 const DEFAULT_PAGE_NUM = 1;
+const QUERY_EDIT_DISTANCE = 3;
 
 const categories = {
   'crypto-service': 'Cryptocurrency service',
@@ -15,6 +16,11 @@ const categories = {
   'forum': 'Forum',
   'other': 'Other'
 };
+
+const cryptocurrency = {
+  'btc': 'Bitcoin',
+  'eth': 'Ethereum'
+}
 
 const webResults = asyncHandler(async (request, response, next) => {
   const { query } = request.query;
@@ -34,12 +40,12 @@ const webResults = asyncHandler(async (request, response, next) => {
     body: {
       query: {
         query_string: {
-          query: `_exists_:data.info.domain_info.language AND (${query}~${query.length/3})`
+          query: `_exists_:data.info.domain_info.language AND (${query}~${query.length/QUERY_EDIT_DISTANCE})`
         }
       },
       aggs: {
         mirrorSize: {
-          terms: { field: 'data.info.domain_info.mirror.group', size:MAX_MIRROR_GROUP_COUNT },
+          terms: { field: 'data.info.domain_info.mirror.group', size: MAX_MIRROR_GROUP_COUNT },
           aggs : { domains: { cardinality : { field : 'data.info.domain' } } },
         },
       },
@@ -58,7 +64,13 @@ const webResults = asyncHandler(async (request, response, next) => {
   const hits = results.body.hits.hits.map((hit) => {
     const domainInfo = hit._source.data.info.domain_info;
     const safety = domainInfo.safety.is_safe? 'Benign' : 'Malicious';
-    const cryptos = domainInfo.attribution? domainInfo.attribution.btc : [];
+    const cryptos = domainInfo.attribution? domainInfo.attribution : {'btc': []};
+    let cryptoLabels = '';
+    for (let key in cryptos) {
+      cryptoLabels += `${cryptos[key].length} (${cryptocurrency[key]})`
+    }
+
+
     const languageNames = new Intl.DisplayNames(['en'], {type: 'language'});
     const mirrors = mirrorMap[domainInfo.mirror.group];
 
@@ -91,7 +103,7 @@ const webResults = asyncHandler(async (request, response, next) => {
         },
         {
           title: 'Crypto Addresses',
-          text: `${cryptos.length} (Bitcoin)`,
+          text: cryptoLabels,
         },
       ],
     };
