@@ -153,7 +153,8 @@ const webResults = asyncHandler(async (request, response, next) => {
         },
         {
           title: 'Mirroring',
-          text: mirrors > 1? `Yes (${mirrors} domains)` : 'No (Unique)'
+          text: domainInfo.mirror.is_mirrored? `Yes (${mirrors} other ${mirrors > 1? 'domains' : 'domain'})`
+              : 'No (Unique)'
         },
         {
           title: 'Language',
