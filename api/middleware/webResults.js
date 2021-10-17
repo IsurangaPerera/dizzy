@@ -8,6 +8,7 @@ const MAX_RESULTS_IN_PAGE = 25;
 const MAX_MIRROR_GROUP_COUNT = 20000;
 const DEFAULT_PAGE_NUM = 1;
 const QUERY_EDIT_DISTANCE_FRACTION = 3;
+const NO_BITCOIN_FILTER = 'none';
 
 const CATEGORIES = {
   'crypto-service': 'Cryptocurrency service',
@@ -17,6 +18,24 @@ const CATEGORIES = {
   'forum': 'Forum',
   'other': 'Other'
 };
+
+const FILTERS = {
+  CATEGORY: ['crypto-service', 'index', 'marketplace', 'pornography', 'forum', 'other'],
+  CRYPTOCURRENCY: ['btc', 'none'],
+  SECURITY: ['benign', 'malicious'],
+  PRIVACY: ['tracking', 'no-tracking'],
+  MIRRORING: ['mirrored', 'unique'],
+  LANGUAGE: ['ar', 'en', 'fr', 'de', 'ru', 'es']
+}
+
+const FILTER_TYPES = {
+  CATEGORY: 'category',
+  CRYPTOCURRENCY: 'cryptos',
+  SECURITY: 'security',
+  PRIVACY: 'privacy',
+  MIRRORING: 'mirroring',
+  LANGUAGE: 'language'
+}
 
 const CRYPTOCURRENCY = {
   'btc': 'Bitcoin',
@@ -30,7 +49,6 @@ const webResults = asyncHandler(async (request, response, next) => {
     return next(new ErrorResponse('Please provide a search query', 400));
   }
 
-
   Search.create({
     user: request.user.id,
     query,
@@ -38,11 +56,36 @@ const webResults = asyncHandler(async (request, response, next) => {
     source: 'web',
   });
 
+  let filters = [];
+  for (let key in filter) {
+      if(key === FILTER_TYPES.CATEGORY && FILTERS.CATEGORY.includes(filter[key])) {
+        filters.push(`(data.info.domain_info.category.type: ${filter[key]})`)
+      } else if(key === FILTER_TYPES.CRYPTOCURRENCY && FILTERS.CRYPTOCURRENCY.includes(filter[key])) {
+        if(filter[key] === NO_BITCOIN_FILTER) {
+          filters.push('NOT (_exists_: data.info.domain_info.attribution)')
+        } else {
+          filters.push(`(_exists_: data.info.domain_info.attribution.${filter[key]})`)
+        }
+      } else if(key === FILTER_TYPES.SECURITY && FILTERS.SECURITY.includes(filter[key])) {
+        filters.push(`(data.info.domain_info.safety.is_safe: ${filter[key] === 'benign'})`)
+      } else if(key === FILTER_TYPES.PRIVACY && FILTERS.PRIVACY.includes(filter[key])) {
+        filters.push(`(data.info.domain_info.privacy.js.fingerprinting.is_fingerprinted: ${filter[key] === 'tracking'})`)
+      } else if(key === FILTER_TYPES.MIRRORING && FILTERS.MIRRORING.includes(filter[key])) {
+        filters.push(`(data.info.domain_info.mirror.is_mirrored: ${filter[key] === 'mirrored'})`)
+      } else if(key === FILTER_TYPES.LANGUAGE && FILTERS.LANGUAGE.includes(filter[key])) {
+        filters.push(`(data.info.domain_info.language: ${filter[key]})`)
+      }
+  }
+  let filterQuery = filters.length > 0? 'AND ' + filters.join(' AND ') : '';
+
   const page = parseInt(request.query.page, 10) || DEFAULT_PAGE_NUM;
   const limit = parseInt(request.query.limit, 10) || MAX_RESULTS_IN_PAGE;
 
   const startIndex = (page - 1) * limit;
   const endIndex = page * limit;
+
+  const queryEditDistance = parseInt(query.length / QUERY_EDIT_DISTANCE_FRACTION);
+  const esQuery = `_exists_:data.info.domain_info.language AND (${query}~${queryEditDistance} ${filterQuery})`;
 
   const results = await es.search({
     index: process.env.ES_CRAWL_INDEX,
@@ -51,7 +94,7 @@ const webResults = asyncHandler(async (request, response, next) => {
     body: {
       query: {
         query_string: {
-          query: `_exists_:data.info.domain_info.language AND (${query}~${query.length/QUERY_EDIT_DISTANCE_FRACTION})`
+          query: esQuery
         }
       },
       aggs: {
