@@ -28,6 +28,7 @@ export const Search = () => {
   const location = useLocation();
   const isBusy = useSelector((state) => state.search.isBusy);
   const query = useSelector((state) => state.search.data.query);
+  const filter = useSelector((state) => state.search.data.filter);
   const results = useSelector((state) => state.search.data.results);
   const noResults = useSelector((state) => state.search.data.noResults);
   const pagination = useSelector((state) => state.search.data.pagination);
@@ -38,9 +39,9 @@ export const Search = () => {
     const query = qs.parse(location.search, { ignoreQueryPrefix: true }).query;
     const source = location.pathname.split('/')[2];
     if (source === 'web') {
-      dispatch(getWebResults(query));
+      dispatch(getWebResults(query, filter));
     }
-  }, [dispatch, location]);
+  }, [dispatch, filter, location]);
 
   // Handlers
   const alertHandler = () => {
@@ -50,7 +51,7 @@ export const Search = () => {
   // JSX
   let moreResults = null;
   if (pagination.next) {
-    moreResults = <MoreResults query={query} source={source} />;
+    moreResults = <MoreResults query={query} filter={filter} source={source} />;
   }
 
   let searchResults;

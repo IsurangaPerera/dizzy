@@ -1,5 +1,5 @@
 // React
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Fragment } from 'react';
 
 // PropTypes
 import PropTypes from 'prop-types';
@@ -11,18 +11,29 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 
 // Material
-import SearchIcon from '@material-ui/icons/Search';
+import {
+  FilterList as FilterListIcon,
+  Search as SearchIcon,
+} from '@material-ui/icons';
 import { Divider, IconButton, InputBase, Paper } from '@material-ui/core';
 
 // Store
-import { setRedirect } from '../../store/actions';
+import { resetFilter, setRedirect } from '../../store/actions';
+
+// Components
+import FilterScrollList from './FilterScrollList';
 
 const SearchBoxRaw = (props) => {
   // Variables
-  const { classes, placeholder = 'Search the darkweb' } = props;
+  const {
+    classes,
+    placeholder = 'Search the darkweb',
+    enableFilter = true,
+  } = props;
   const dispatch = useDispatch();
   const history = useHistory();
   const [query, setQuery] = useState('');
+  const [showFilter, setShowFilter] = useState(false);
   const lastQuery = useSelector((state) => state.search.data.query);
   const isAuth = useSelector((state) => state.auth.data.token !== null);
 
@@ -32,6 +43,15 @@ const SearchBoxRaw = (props) => {
   }, [lastQuery]);
 
   // Handlers
+  const filterShowHandler = () => {
+    setShowFilter(!showFilter);
+
+    // Reset filter when hidden
+    if (showFilter) {
+      dispatch(resetFilter());
+    }
+  };
+
   const queryChangeHandler = (event) => {
     const query = event.target.value;
     setQuery(query);
@@ -54,6 +74,26 @@ const SearchBoxRaw = (props) => {
   };
 
   // JSX
+  let filterScrollList = null;
+  if (enableFilter && showFilter) {
+    filterScrollList = <FilterScrollList />;
+  }
+
+  let filterDivier = null;
+  if (enableFilter) {
+    filterDivier = (
+      <Fragment>
+        <Divider className={classes.divider} orientation="vertical" />
+        <IconButton
+          color={showFilter ? 'primary' : 'default'}
+          onClick={filterShowHandler}
+        >
+          <FilterListIcon />
+        </IconButton>
+      </Fragment>
+    );
+  }
+
   const view = (
     <div className={classes.root}>
       <Paper
@@ -62,6 +102,9 @@ const SearchBoxRaw = (props) => {
         variant="outlined"
         onSubmit={querySubmitHandler}
       >
+        <IconButton type="submit" aria-label="search">
+          <SearchIcon />
+        </IconButton>
         <InputBase
           className={classes.input}
           type="search"
@@ -69,11 +112,9 @@ const SearchBoxRaw = (props) => {
           placeholder={placeholder}
           onChange={queryChangeHandler}
         />
-        <Divider className={classes.divider} orientation="vertical" />
-        <IconButton color="primary" type="submit" aria-label="search">
-          <SearchIcon />
-        </IconButton>
+        {filterDivier}
       </Paper>
+      {filterScrollList}
     </div>
   );
 
@@ -88,6 +129,7 @@ SearchBoxRaw.propTypes = {
     input: PropTypes.string.isRequired,
   }),
   placeholder: PropTypes.string,
+  enableFilter: PropTypes.bool,
 };
 
 // Dynamic styling
