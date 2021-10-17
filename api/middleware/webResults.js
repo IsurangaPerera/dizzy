@@ -2,6 +2,7 @@ const asyncHandler = require('../middleware/async');
 const ErrorResponse = require('../utils/errorResponse');
 const es = require('../services/es');
 const moment = require('moment');
+const Search = require('../models/Search');
 
 const MAX_RESULTS_IN_PAGE = 25;
 const MAX_MIRROR_GROUP_COUNT = 20000;
@@ -23,13 +24,23 @@ const CRYPTOCURRENCY = {
 }
 
 const webResults = asyncHandler(async (request, response, next) => {
-  const { query } = request.query;
+  const { query, filter } = request.query;
+
   if (!query) {
     return next(new ErrorResponse('Please provide a search query', 400));
   }
 
+
+  Search.create({
+    user: request.user.id,
+    query,
+    filter,
+    source: 'web',
+  });
+
   const page = parseInt(request.query.page, 10) || DEFAULT_PAGE_NUM;
   const limit = parseInt(request.query.limit, 10) || MAX_RESULTS_IN_PAGE;
+
   const startIndex = (page - 1) * limit;
   const endIndex = page * limit;
 
