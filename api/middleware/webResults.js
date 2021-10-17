@@ -12,21 +12,28 @@ const NO_BITCOIN_FILTER = 'none';
 
 const CATEGORIES = {
   'crypto-service': 'Cryptocurrency service',
-  'index': 'Index, link list, or similar',
-  'marketplace': 'Marketplace',
-  'pornography': 'Pornography',
-  'forum': 'Forum',
-  'other': 'Other'
+  index: 'Index, link list, or similar',
+  marketplace: 'Marketplace',
+  pornography: 'Pornography',
+  forum: 'Forum',
+  other: 'Other',
 };
 
 const FILTERS = {
-  CATEGORY: ['crypto-service', 'index', 'marketplace', 'pornography', 'forum', 'other'],
+  CATEGORY: [
+    'crypto-service',
+    'index',
+    'marketplace',
+    'pornography',
+    'forum',
+    'other',
+  ],
   CRYPTOCURRENCY: ['btc', 'none'],
   SECURITY: ['benign', 'malicious'],
   PRIVACY: ['tracking', 'no-tracking'],
   MIRRORING: ['mirrored', 'unique'],
-  LANGUAGE: ['ar', 'en', 'fr', 'de', 'ru', 'es']
-}
+  LANGUAGE: ['ar', 'en', 'fr', 'de', 'ru', 'es'],
+};
 
 const FILTER_TYPES = {
   CATEGORY: 'category',
@@ -34,13 +41,13 @@ const FILTER_TYPES = {
   SECURITY: 'security',
   PRIVACY: 'privacy',
   MIRRORING: 'mirroring',
-  LANGUAGE: 'language'
-}
+  LANGUAGE: 'language',
+};
 
 const CRYPTOCURRENCY = {
-  'btc': 'Bitcoin',
-  'eth': 'Ethereum'
-}
+  btc: 'Bitcoin',
+  eth: 'Ethereum',
+};
 
 const webResults = asyncHandler(async (request, response, next) => {
   const { query, filter } = request.query;
@@ -58,25 +65,55 @@ const webResults = asyncHandler(async (request, response, next) => {
 
   let filters = [];
   for (let key in filter) {
-      if(key === FILTER_TYPES.CATEGORY && FILTERS.CATEGORY.includes(filter[key])) {
-        filters.push(`(data.info.domain_info.category.type: ${filter[key]})`)
-      } else if(key === FILTER_TYPES.CRYPTOCURRENCY && FILTERS.CRYPTOCURRENCY.includes(filter[key])) {
-        if(filter[key] === NO_BITCOIN_FILTER) {
-          filters.push('NOT (_exists_: data.info.domain_info.attribution)')
-        } else {
-          filters.push(`(_exists_: data.info.domain_info.attribution.${filter[key]})`)
-        }
-      } else if(key === FILTER_TYPES.SECURITY && FILTERS.SECURITY.includes(filter[key])) {
-        filters.push(`(data.info.domain_info.safety.is_safe: ${filter[key] === 'benign'})`)
-      } else if(key === FILTER_TYPES.PRIVACY && FILTERS.PRIVACY.includes(filter[key])) {
-        filters.push(`(data.info.domain_info.privacy.js.fingerprinting.is_fingerprinted: ${filter[key] === 'tracking'})`)
-      } else if(key === FILTER_TYPES.MIRRORING && FILTERS.MIRRORING.includes(filter[key])) {
-        filters.push(`(data.info.domain_info.mirror.is_mirrored: ${filter[key] === 'mirrored'})`)
-      } else if(key === FILTER_TYPES.LANGUAGE && FILTERS.LANGUAGE.includes(filter[key])) {
-        filters.push(`(data.info.domain_info.language: ${filter[key]})`)
+    if (
+      key === FILTER_TYPES.CATEGORY &&
+      FILTERS.CATEGORY.includes(filter[key])
+    ) {
+      filters.push(`(data.info.domain_info.category.type: ${filter[key]})`);
+    } else if (
+      key === FILTER_TYPES.CRYPTOCURRENCY &&
+      FILTERS.CRYPTOCURRENCY.includes(filter[key])
+    ) {
+      if (filter[key] === NO_BITCOIN_FILTER) {
+        filters.push('NOT (_exists_: data.info.domain_info.attribution)');
+      } else {
+        filters.push(
+          `(_exists_: data.info.domain_info.attribution.${filter[key]})`
+        );
       }
+    } else if (
+      key === FILTER_TYPES.SECURITY &&
+      FILTERS.SECURITY.includes(filter[key])
+    ) {
+      filters.push(
+        `(data.info.domain_info.safety.is_safe: ${filter[key] === 'benign'})`
+      );
+    } else if (
+      key === FILTER_TYPES.PRIVACY &&
+      FILTERS.PRIVACY.includes(filter[key])
+    ) {
+      filters.push(
+        `(data.info.domain_info.privacy.js.fingerprinting.is_fingerprinted: ${
+          filter[key] === 'tracking'
+        })`
+      );
+    } else if (
+      key === FILTER_TYPES.MIRRORING &&
+      FILTERS.MIRRORING.includes(filter[key])
+    ) {
+      filters.push(
+        `(data.info.domain_info.mirror.is_mirrored: ${
+          filter[key] === 'mirrored'
+        })`
+      );
+    } else if (
+      key === FILTER_TYPES.LANGUAGE &&
+      FILTERS.LANGUAGE.includes(filter[key])
+    ) {
+      filters.push(`(data.info.domain_info.language: ${filter[key]})`);
+    }
   }
-  let filterQuery = filters.length > 0? 'AND ' + filters.join(' AND ') : '';
+  let filterQuery = filters.length > 0 ? 'AND ' + filters.join(' AND ') : '';
 
   const page = parseInt(request.query.page, 10) || DEFAULT_PAGE_NUM;
   const limit = parseInt(request.query.limit, 10) || MAX_RESULTS_IN_PAGE;
@@ -84,7 +121,9 @@ const webResults = asyncHandler(async (request, response, next) => {
   const startIndex = (page - 1) * limit;
   const endIndex = page * limit;
 
-  const queryEditDistance = parseInt(query.length / QUERY_EDIT_DISTANCE_FRACTION);
+  const queryEditDistance = parseInt(
+    query.length / QUERY_EDIT_DISTANCE_FRACTION
+  );
   const esQuery = `_exists_:data.info.domain_info.language AND (${query}~${queryEditDistance} ${filterQuery})`;
 
   const results = await es.search({
@@ -94,38 +133,48 @@ const webResults = asyncHandler(async (request, response, next) => {
     body: {
       query: {
         query_string: {
-          query: esQuery
-        }
+          query: esQuery,
+        },
       },
       aggs: {
         mirrorSize: {
-          terms: { field: 'data.info.domain_info.mirror.group', size: MAX_MIRROR_GROUP_COUNT },
-          aggs : { domains: { cardinality : { field : 'data.info.domain' } } },
+          terms: {
+            field: 'data.info.domain_info.mirror.group',
+            size: MAX_MIRROR_GROUP_COUNT,
+          },
+          aggs: { domains: { cardinality: { field: 'data.info.domain' } } },
         },
       },
-      _source: ['data.info.title', 'data.info.url', 'data.info.domain_info', 'data.info.summary', 'data.timestamp']
+      _source: [
+        'data.info.title',
+        'data.info.url',
+        'data.info.domain_info',
+        'data.info.summary',
+        'data.timestamp',
+      ],
     },
   });
 
   const total = results.body.hits.total.value;
 
-  let mirrorMap = {}
+  let mirrorMap = {};
   const buckets = results.body.aggregations.mirrorSize.buckets;
   for (const obj of buckets) {
-    mirrorMap[obj.key] = obj.domains.value
+    mirrorMap[obj.key] = obj.domains.value;
   }
 
   const hits = results.body.hits.hits.map((hit) => {
     const domainInfo = hit._source.data.info.domain_info;
-    const safety = domainInfo.safety.is_safe? 'Benign' : 'Malicious';
-    const cryptos = domainInfo.attribution? domainInfo.attribution : {'btc': []};
+    const safety = domainInfo.safety.is_safe ? 'Benign' : 'Malicious';
+    const cryptos = domainInfo.attribution
+      ? domainInfo.attribution
+      : { btc: [] };
     let cryptoLabels = '';
     for (let key in cryptos) {
-      cryptoLabels += `${cryptos[key].length} (${CRYPTOCURRENCY[key]})`
+      cryptoLabels += `${cryptos[key].length} (${CRYPTOCURRENCY[key]})`;
     }
 
-
-    const languageNames = new Intl.DisplayNames(['en'], {type: 'language'});
+    const languageNames = new Intl.DisplayNames(['en'], { type: 'language' });
     const mirrors = mirrorMap[domainInfo.mirror.group];
 
     return {
@@ -149,16 +198,18 @@ const webResults = asyncHandler(async (request, response, next) => {
         },
         {
           title: 'Privacy',
-          text: domainInfo.privacy.js.fingerprinting.is_fingerprinted? 'Tracked' : 'Not tracked',
+          text: domainInfo.privacy.js.fingerprinting.is_fingerprinted
+            ? 'Tracked'
+            : 'Not tracked',
         },
         {
           title: 'Mirroring',
-          text: mirrors > 1? `Yes (${mirrors} domains)` : 'No (Unique)'
+          text: mirrors > 1 ? `Yes (${mirrors} domains)` : 'No (Unique)',
         },
         {
           title: 'Language',
           text: languageNames.of(domainInfo.language),
-        }
+        },
       ],
     };
   });
