@@ -60,7 +60,7 @@ const webResults = asyncHandler(async (request, response, next) => {
           aggs : { domains: { cardinality : { field : 'data.info.domain' } } },
         },
       },
-      _source: ['data.info.title', 'data.info.url', 'data.info.domain_info', 'data.summary', 'data.timestamp']
+      _source: ['data.info.title', 'data.info.url', 'data.info.domain_info', 'data.info.summary', 'data.timestamp']
     },
   });
 
@@ -90,32 +90,32 @@ const webResults = asyncHandler(async (request, response, next) => {
       url: hit._source.data.info.url,
       title: hit._source.data.info.title,
       crawledAt: moment(hit._source.data.timestamp).utc().toISOString(true),
-      body: hit._source.data.summary || hit._source.data.info.title,
+      body: hit._source.data.info.summary || hit._source.data.info.title,
       info: [
-        {
-          title: 'Security',
-          text: safety,
-        },
         {
           title: 'Category',
           text: CATEGORIES[domainInfo.category.type],
         },
         {
+          title: 'Crypto Addresses',
+          text: cryptoLabels,
+        },
+        {
+          title: 'Security',
+          text: safety,
+        },
+        {
           title: 'Privacy',
-          text: domainInfo.privacy.js.fingerprinting.is_fingerprinted? 'Tracking' : 'No tracking',
+          text: domainInfo.privacy.js.fingerprinting.is_fingerprinted? 'Tracked' : 'Not tracked',
+        },
+        {
+          title: 'Mirroring',
+          text: mirrors > 1? `Yes (${mirrors} domains)` : 'No (Unique)'
         },
         {
           title: 'Language',
           text: languageNames.of(domainInfo.language),
-        },
-        {
-          title: 'Mirroring',
-          text: mirrors > 1? `Yes (${mirrors} domains)` : 'No'
-        },
-        {
-          title: 'Crypto Addresses',
-          text: cryptoLabels,
-        },
+        }
       ],
     };
   });
