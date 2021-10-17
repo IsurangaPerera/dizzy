@@ -4,11 +4,8 @@ import React from 'react';
 // Material
 import { Typography } from '@material-ui/core';
 
-// Componets
-import Icon from './Icon';
-
 // Styles
-import { useStyles } from './ResultHeader-styles';
+import { useStyles, TorIcon } from './ResultHeader-styles';
 
 const ResultHeader = (props) => {
   // Variables
@@ -17,7 +14,7 @@ const ResultHeader = (props) => {
   //JSX
   const view = (
     <div className={classes.root}>
-      <Icon source="tor" />
+      <TorIcon fontSize="inherit" />
       <Typography color="textSecondary" variant="caption">
         {props.url}
       </Typography>
