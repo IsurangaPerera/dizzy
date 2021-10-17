@@ -60,24 +60,19 @@ const webResults = asyncHandler(async (request, response, next) => {
   for (let key in filter) {
       if(key === FILTER_TYPES.CATEGORY && FILTERS.CATEGORY.includes(filter[key])) {
         filters.push(`(data.info.domain_info.category.type: ${filter[key]})`)
-      }
-      if(key === FILTER_TYPES.CRYPTOCURRENCY && FILTERS.CRYPTOCURRENCY.includes(filter[key])) {
+      } else if(key === FILTER_TYPES.CRYPTOCURRENCY && FILTERS.CRYPTOCURRENCY.includes(filter[key])) {
         if(filter[key] === NO_BITCOIN_FILTER) {
           filters.push('NOT (_exists_: data.info.domain_info.attribution)')
         } else {
           filters.push(`(_exists_: data.info.domain_info.attribution.${filter[key]})`)
         }
-      }
-      if(key === FILTER_TYPES.SECURITY && FILTERS.SECURITY.includes(filter[key])) {
+      } else if(key === FILTER_TYPES.SECURITY && FILTERS.SECURITY.includes(filter[key])) {
         filters.push(`(data.info.domain_info.safety.is_safe: ${filter[key] === 'benign'})`)
-      }
-      if(key === FILTER_TYPES.PRIVACY && FILTERS.PRIVACY.includes(filter[key])) {
+      } else if(key === FILTER_TYPES.PRIVACY && FILTERS.PRIVACY.includes(filter[key])) {
         filters.push(`(data.info.domain_info.privacy.js.fingerprinting.is_fingerprinted: ${filter[key] === 'tracking'})`)
-      }
-      if(key === FILTER_TYPES.MIRRORING && FILTERS.MIRRORING.includes(filter[key])) {
+      } else if(key === FILTER_TYPES.MIRRORING && FILTERS.MIRRORING.includes(filter[key])) {
         filters.push(`(data.info.domain_info.mirror.is_mirrored: ${filter[key] === 'mirrored'})`)
-      }
-      if(key === FILTER_TYPES.LANGUAGE && FILTERS.LANGUAGE.includes(filter[key])) {
+      } else if(key === FILTER_TYPES.LANGUAGE && FILTERS.LANGUAGE.includes(filter[key])) {
         filters.push(`(data.info.domain_info.language: ${filter[key]})`)
       }
   }
