@@ -6,9 +6,9 @@ const moment = require('moment');
 const MAX_RESULTS_IN_PAGE = 25;
 const MAX_MIRROR_GROUP_COUNT = 20000;
 const DEFAULT_PAGE_NUM = 1;
-const QUERY_EDIT_DISTANCE = 3;
+const QUERY_EDIT_DISTANCE_FRACTION = 3;
 
-const categories = {
+const CATEGORIES = {
   'crypto-service': 'Cryptocurrency service',
   'index': 'Index, link list, or similar',
   'marketplace': 'Marketplace',
@@ -17,7 +17,7 @@ const categories = {
   'other': 'Other'
 };
 
-const cryptocurrency = {
+const CRYPTOCURRENCY = {
   'btc': 'Bitcoin',
   'eth': 'Ethereum'
 }
@@ -40,7 +40,7 @@ const webResults = asyncHandler(async (request, response, next) => {
     body: {
       query: {
         query_string: {
-          query: `_exists_:data.info.domain_info.language AND (${query}~${query.length/QUERY_EDIT_DISTANCE})`
+          query: `_exists_:data.info.domain_info.language AND (${query}~${query.length/QUERY_EDIT_DISTANCE_FRACTION})`
         }
       },
       aggs: {
@@ -67,7 +67,7 @@ const webResults = asyncHandler(async (request, response, next) => {
     const cryptos = domainInfo.attribution? domainInfo.attribution : {'btc': []};
     let cryptoLabels = '';
     for (let key in cryptos) {
-      cryptoLabels += `${cryptos[key].length} (${cryptocurrency[key]})`
+      cryptoLabels += `${cryptos[key].length} (${CRYPTOCURRENCY[key]})`
     }
 
 
@@ -87,7 +87,7 @@ const webResults = asyncHandler(async (request, response, next) => {
         },
         {
           title: 'Category',
-          text: categories[domainInfo.category.type],
+          text: CATEGORIES[domainInfo.category.type],
         },
         {
           title: 'Privacy',
