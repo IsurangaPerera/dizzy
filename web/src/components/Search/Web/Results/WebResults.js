@@ -1,14 +1,14 @@
 // React
-import React from "react";
+import React from 'react';
 
 // Material
-import { List, ListItem } from "@material-ui/core";
+import { List, ListItem } from '@material-ui/core';
 
 // Componets
-import WebResult from "../Result";
+import WebResult from '../Result';
 
 // Styles
-import { useStyles } from "./WebResults-styles";
+import { useStyles } from './WebResults-styles';
 
 export const WebResults = (props) => {
   // Variables
@@ -23,7 +23,6 @@ export const WebResults = (props) => {
             <ListItem key={result.id}>
               <WebResult
                 id={result.id}
-                source={result.source}
                 url={result.url}
                 title={result.title}
                 crawledat={result.crawledAt}

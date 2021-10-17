@@ -1,24 +1,24 @@
 // React
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useState } from 'react';
 
 // Material
-import { Card } from "@material-ui/core";
+import { Card } from '@material-ui/core';
 
 // Components
-import Header from "./Header";
-import Title from "./Title";
-import Body from "./Body";
-import Actions from "./Actions";
-import Info from "./Info";
+import Header from './Header';
+import Title from './Title';
+import Body from './Body';
+import Actions from './Actions';
+import Info from './Info';
 
 // Styles
-import { useStyles } from "./WebResult-styles";
+import { useStyles } from './WebResult-styles';
 
 const WebResult = (props) => {
   // Variables
   const classes = useStyles();
   const [expanded, setExpanded] = useState(false);
-  const { id, info, url, source, title, crawledat, body } = props;
+  const { id, info, url, title, crawledat, body } = props;
 
   // Handlers
   const expandCardHandler = () => {
@@ -44,7 +44,7 @@ const WebResult = (props) => {
   const view = (
     <div className={classes.root}>
       <Card variant="outlined">
-        <Header url={url} source={source} />
+        <Header url={url} />
         <Title text={title} url={url} />
         <Body date={crawledat} text={body} />
         {expansion}
