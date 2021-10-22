@@ -3,6 +3,7 @@ const ErrorResponse = require('../utils/errorResponse');
 const es = require('../services/es');
 const moment = require('moment');
 const Search = require('../models/Search');
+const Statistic = require("../models/Statistic");
 
 const MAX_RESULTS_IN_PAGE = 25;
 const MAX_MIRROR_GROUP_COUNT = 20000;
@@ -126,6 +127,11 @@ const webResults = asyncHandler(async (request, response, next) => {
   );
   const esQuery = `_exists_:data.info.domain_info.language AND (${query}~${queryEditDistance} ${filterQuery})`;
 
+  let availability = await Statistic.find({type: 'domain'});
+  if (availability && availability.length >= 1) {
+    availability = availability[0].computed.domains;
+  }
+
   const results = await es.search({
     index: process.env.ES_CRAWL_INDEX,
     from: startIndex,
@@ -177,6 +183,18 @@ const webResults = asyncHandler(async (request, response, next) => {
     const languageNames = new Intl.DisplayNames(['en'], { type: 'language' });
     const mirrors = mirrorMap[domainInfo.mirror.group];
 
+    let status = 'N/A';
+    if(availability && Object.keys(availability).length >= 1) {
+      const key = hit._source.data.info.domain_info.name.split('.')[0]
+      if(key in availability) {
+        const dayDiff = moment().diff(moment(availability[key].lastChecked), 'days');
+        status = `Last checked ${ dayDiff } day(s) ago, 30-day availability: ${ availability[key].availability }%`;
+      } else {
+        const dayDiff = moment().diff(moment(hit._source.data.timestamp), 'days');
+        status = `Last checked ${ dayDiff } day(s) ago, 30-day availability: N/A`;
+      }
+    }
+
     return {
       id: hit._id,
       url: hit._source.data.info.url,
@@ -201,6 +219,10 @@ const webResults = asyncHandler(async (request, response, next) => {
           text: domainInfo.privacy.js.fingerprinting.is_fingerprinted
             ? 'Tracked'
             : 'Not tracked',
+        },
+        {
+          title: 'Status',
+          text: status
         },
         {
           title: 'Mirroring',

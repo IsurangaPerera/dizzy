@@ -118,7 +118,7 @@ const FilterForm = () => {
           {errors.privacy && errors.privacy.message}
         </FormHelperText>
       </FormControl>
-      {/* <FormControl className={classes.select} error={!!errors.status}>
+      <FormControl className={classes.select} error={!!errors.status}>
         <InputLabel>Status</InputLabel>
         <Controller
           as={(props) => getSelection(props, SEARCH_FILTER.status)}
@@ -129,7 +129,7 @@ const FilterForm = () => {
         <FormHelperText>
           {errors.status && errors.status.message}
         </FormHelperText>
-      </FormControl> */}
+      </FormControl>
       <FormControl className={classes.select} error={!!errors.mirroring}>
         <InputLabel>Mirroring</InputLabel>
         <Controller
