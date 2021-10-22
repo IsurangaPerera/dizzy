@@ -1,6 +1,8 @@
+const jwt = require('jsonwebtoken');
 const asyncHandler = require('../middleware/async');
 const ErrorResponse = require('../utils/errorResponse');
 const User = require('../models/User');
+const { activationEmailTemplate, sendEmail } = require('../utils/mail');
 const sendTokenResponse = require('../utils/sendTokenResponse');
 
 // @desc      Sign in a user
@@ -20,6 +22,10 @@ const signin = asyncHandler(async (request, response, next) => {
   const match = await user.matchPassword(password);
   if (!match) {
     return next(new ErrorResponse('Invalid credentials', 401));
+  }
+
+  if (!user.isActivated) {
+    return next(new ErrorResponse('Account is not activated', 400));
   }
 
   sendTokenResponse(user, 200, response);
@@ -48,7 +54,37 @@ const signout = asyncHandler(async (request, response, next) => {
 const signup = asyncHandler(async (request, response, next) => {
   const user = await User.create(request.body);
 
-  response.status(201).json({
+  const emailTemplate = activationEmailTemplate({
+    to: user.email,
+    url: process.env.ACCOUNT_ACTIVIATION_URL,
+    token: user.generateActivationToken(process.env.JWT_ACTIVATION_EXPIRE_DAYS),
+  });
+
+  sendEmail(emailTemplate);
+
+  response.status(200).json({
+    success: true,
+    data: {},
+  });
+});
+
+// @desc Acivate a user account
+// @route GET /api/v1/auth/activate/:token
+// @access Public
+const activate = asyncHandler(async (request, response, next) => {
+  let decodedToken = null;
+
+  try {
+    decodedToken = jwt.verify(request.params.token, process.env.JWT_SECRET);
+  } catch (error) {
+    return next(new ErrorResponse('Invalid activation token', 400));
+  }
+
+  await User.updateOne(decodedToken._id, {
+    isActivated: true,
+  });
+
+  response.status(200).json({
     success: true,
     data: {},
   });
@@ -57,3 +93,4 @@ const signup = asyncHandler(async (request, response, next) => {
 exports.signin = signin;
 exports.signout = signout;
 exports.signup = signup;
+exports.activate = activate;
