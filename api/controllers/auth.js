@@ -80,7 +80,7 @@ const activate = asyncHandler(async (request, response, next) => {
     return next(new ErrorResponse('Invalid activation token', 400));
   }
 
-  await User.updateOne(decodedToken._id, {
+  await User.findByIdAndUpdate(decodedToken.id, {
     isActivated: true,
   });
 
