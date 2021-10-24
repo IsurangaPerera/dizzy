@@ -127,11 +127,7 @@ const webResults = asyncHandler(async (request, response, next) => {
   );
   const esQuery = `_exists_:data.info.domain_info.language AND (${query}~${queryEditDistance} ${filterQuery})`;
 
-  let availability = await Statistic.find({type: 'domain'});
-  if (availability && availability.length >= 1) {
-    availability = availability[0].computed.domains;
-  }
-
+  const availability = await Statistic.findOne({type: 'domain'});
   const results = await es.search({
     index: process.env.ES_CRAWL_INDEX,
     from: startIndex,
@@ -184,14 +180,22 @@ const webResults = asyncHandler(async (request, response, next) => {
     const mirrors = mirrorMap[domainInfo.mirror.group];
 
     let status = 'N/A';
-    if(availability && Object.keys(availability).length >= 1) {
+    let domainAvailability = 'N/A';
+    if(availability) {
+      const domains = availability.computed.domains;
       const key = hit._source.data.info.domain_info.name.split('.')[0]
-      if(key in availability) {
-        const dayDiff = moment().diff(moment(availability[key].lastChecked), 'days');
-        status = `Last checked ${ dayDiff } day(s) ago, 30-day availability: ${ availability[key].availability }%`;
+      if(key in domains) {
+        const dayDiff = moment().diff(moment(domains[key].lastChecked), 'days') - 1;
+        status = 'Up (Today)';
+        if(dayDiff === 1) {
+          status = `Up (${ dayDiff } day ago)`
+        }else if(dayDiff > 1) {
+          status = `Up (${ dayDiff } days ago)`
+        }
+        domainAvailability = `${ domains[key].availability }% (last 30 days)`
       } else {
-        const dayDiff = moment().diff(moment(hit._source.data.timestamp), 'days');
-        status = `Last checked ${ dayDiff } day(s) ago, 30-day availability: N/A`;
+        const dayDiff = moment().diff(moment(hit._source.data.timestamp), 'days') - 1;
+        status = `Up (${ dayDiff } days ago)`;
       }
     }
 
@@ -223,6 +227,10 @@ const webResults = asyncHandler(async (request, response, next) => {
         {
           title: 'Status',
           text: status
+        },
+        {
+          title: 'Availability',
+          text: domainAvailability
         },
         {
           title: 'Mirroring',

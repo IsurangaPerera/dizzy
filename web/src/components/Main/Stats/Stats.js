@@ -18,7 +18,7 @@ const MainStats = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
   const stats = useSelector((state) => state.stats.data.computed);
-  const cryptosCount = Object.values(stats.count.crypto).reduce(
+  const cryptosCount = Object.values(stats.index.crypto).reduce(
     (a, b) => a + b
   );
 
@@ -37,8 +37,8 @@ const MainStats = () => {
         Find what you're looking for in the darkweb
       </Typography>
       <div className={classes.stats}>
-        <Stat value={stats.count.page} text="Pages" />
-        <Stat value={stats.count.domain} text="Domains" />
+        <Stat value={stats.index.page} text="Pages" />
+        <Stat value={stats.index.domain} text="Domains" />
         <Stat value={cryptosCount} text="Cryptos" />
       </div>
     </div>

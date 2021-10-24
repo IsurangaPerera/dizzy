@@ -13,15 +13,15 @@ const computeStats = async () => {
     console.log(error);
   }
 
-  const count = {};
+  const index = {};
   try {
-    count.page = await getPageCount();
-    count.domain = await getDomainCount();
-    count.crypto = await getCryptoCount();
+    index.page = await getPageCount();
+    index.domain = await getDomainCount();
+    index.crypto = await getCryptoCount();
     await Statistic.create({
       type: 'index',
       computed: {
-        count
+        index
       },
     });
   } catch (error) {
@@ -30,7 +30,7 @@ const computeStats = async () => {
   }
 
   try {
-    const domains = await getServiceStatus();
+    const domains = await getDomainStatus();
     await Statistic.create({
       type: 'domain',
       computed: {
@@ -61,7 +61,7 @@ const getPageCount = async () => {
 };
 
 const getDomainCount = async () => {
-  result = await es.search({
+  let result = await es.search({
     index: process.env.ES_CRAWLER_INDEX,
     size: 0,
     body: {
@@ -78,7 +78,7 @@ const getDomainCount = async () => {
 };
 
 const getCryptoCount = async () => {
-  result = await es.search({
+  let result = await es.search({
     index: [process.env.ES_CRAWLER_INDEX, process.env.ES_RECRAWLER_INDEX],
     size: 0,
     body: {
@@ -96,7 +96,7 @@ const getCryptoCount = async () => {
   };
 };
 
-const getServiceStatus = async () => {
+const getDomainStatus = async () => {
   let result = await es.search({
     index: process.env.ES_HEALTHCHECK_INDEX,
     size: 0,
@@ -133,8 +133,8 @@ const getServiceStatus = async () => {
   const buckets = result.body.aggregations.availability.buckets;
   for (const bucket of buckets) {
     const timestamp = bucket.key;
-    for (const e of bucket.domains.buckets) {
-      const key = e.key.split('.')[0];
+    for (const domainEntry of bucket.domains.buckets) {
+      const key = domainEntry.key.split('.')[0];
       if(key in domains) {
         domains[key].lastChecked = timestamp;
         domains[key].availability += 1;

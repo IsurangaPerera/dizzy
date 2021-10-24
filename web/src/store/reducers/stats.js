@@ -8,7 +8,7 @@ import { updateObject } from '../../utils';
 const initialState = {
   data: {
     computed: {
-      count: {
+      index: {
         page: 0,
         domain: 0,
         crypto: {
