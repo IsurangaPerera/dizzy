@@ -47,7 +47,8 @@ services:
       ES_PING_TIMEOUT_MS: 20000
       ES_CRAWLER_INDEX: 'darkweb-tor-index'
       ES_RECRAWLER_INDEX: 'darkweb-tor-recrawler-index'
-      ES_HEALTHCHECK_INDEX: 'darkweb-healthcheck'
+      ES_HEALTHCHECK_INDEX_OLD: 'darkweb-healthcheck'
+      ES_HEALTHCHECK_INDEX: 'darkweb-healthcheck-index'
       JWT_SECRET: 'UJl5Y8nK7b7TNjz8'
       JWT_AUTH_EXPIRE_DAYS: '30d'
       JWT_ACTIVATION_EXPIRE_DAYS: '3d'

@@ -185,17 +185,18 @@ const webResults = asyncHandler(async (request, response, next) => {
       const domains = availability.computed.domains;
       const key = hit._source.data.info.domain_info.name.split('.')[0]
       if(key in domains) {
-        const dayDiff = moment().diff(moment(domains[key].lastChecked), 'days') - 1;
-        status = 'Up (Today)';
-        if(dayDiff === 1) {
-          status = `Up (${ dayDiff } day ago)`
-        }else if(dayDiff > 1) {
-          status = `Up (${ dayDiff } days ago)`
+        const dayDiff = moment().diff(moment(domains[key].timestamp), 'days') - 1;
+        const minDiff = moment().diff(moment(domains[key].timestamp), 'minutes');
+        if(dayDiff <= 1 && domains[key].is_online) {
+          status = `Online (last checked: ${ (minDiff/60).toFixed(1) } hours ago)`;
+        } else if(dayDiff <= 1 && domains[key].is_offline) {
+          status = `Offline (last checked: ${ (minDiff/60).toFixed(1) } hours ago)`;
         }
-        domainAvailability = `${ domains[key].availability }% (last 30 days)`
+        domainAvailability = `${ domains[key].availability }% (last 7 days)`;
       } else {
         const dayDiff = moment().diff(moment(hit._source.data.timestamp), 'days') - 1;
-        status = `Up (${ dayDiff } days ago)`;
+        status = `Offline (last checked: ${ dayDiff } days ago)`;
+        domainAvailability = `N/A (last 7 days)`
       }
     }
 
