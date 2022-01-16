@@ -1,5 +1,5 @@
-const es = require('../services/es');
-const Statistic = require('../models/Statistic');
+const es = require("../services/es");
+const Statistic = require("../models/Statistic");
 
 const computeStats = async () => {
   console.log(`[cron:computeStats] Server running a scheduled job`.magenta);
@@ -10,7 +10,7 @@ const computeStats = async () => {
     count.domain = await getDomainCount();
     count.crypto = await getCryptoCount();
     await Statistic.create({
-      type: 'batch',
+      type: "batch",
       computed: {
         count,
       },
@@ -29,13 +29,30 @@ const getPageCount = async () => {
       aggs: {
         pageCount: {
           cardinality: {
-            field: 'data.info.url',
+            field: "data.info.url",
           },
         },
       },
     },
   });
-  return result.body.aggregations.pageCount.value;
+
+  let resultOld = await es.search({
+    index: [process.env.ES_CRAWLER_INDEX_OLD],
+    size: 0,
+    body: {
+      aggs: {
+        pageCount: {
+          cardinality: {
+            field: "info.url",
+          },
+        },
+      },
+    },
+  });
+  return (
+    result.body.aggregations.pageCount.value +
+    resultOld.body.aggregations.pageCount.value
+  );
 };
 
 const getDomainCount = async () => {
@@ -46,7 +63,7 @@ const getDomainCount = async () => {
       aggs: {
         domainCount: {
           cardinality: {
-            field: 'data.info.domain',
+            field: "data.info.domain",
           },
         },
       },
@@ -63,7 +80,7 @@ const getCryptoCount = async () => {
       aggs: {
         btcAddressCount: {
           cardinality: {
-            field: 'data.info.cryptocurrency.btc.address.keyword',
+            field: "data.info.cryptocurrency.btc.address.keyword",
           },
         },
       },
